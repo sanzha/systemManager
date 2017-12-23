@@ -1,0 +1,20 @@
+{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "loginUser": {
+            "id": 1,
+            "name": "admin",
+            "phone": "15800968114",
+            "password": "789",
+            "companyId": 1,
+            "role": 7,
+            "author": "",
+            "createTime": "2017-12-12"
+        },
+        "companyMap": {
+            "1": "洛阳",
+            "2": "驻马店"
+        }
+    }
+}

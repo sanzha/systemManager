@@ -1,0 +1,15 @@
+{
+    "code": 200,
+    "msg": "修改成功",
+    "data": {
+        "id": 6,
+        "name": "kkk",
+        "phone": "15808393114",
+        "address": null,
+        "isBlack": null,
+        "openid": null,
+        "iDCardNo": null,
+        "author": null,
+        "createTime": null
+    }
+}

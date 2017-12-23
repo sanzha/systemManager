@@ -1,0 +1,15 @@
+{
+    "code": 500,
+    "msg": "删除客户失败",
+    "data": {
+        "id": 10,
+        "name": "jack ma",
+        "phone": "15800962346",
+        "address": "",
+        "isBlack": 0,
+        "openid": "",
+        "iDCardNo": "",
+        "author": "",
+        "createTime": "2017-12-24"
+    }
+}

@@ -1,0 +1,180 @@
+接口名：	/login
+TYPE：	POST
+
+参数列表：
+
+  参数名				是否必须				含义
+{
+  "id": null,
+  "name": null,
+  "phone": "15800968114",
+  "password": "789",
+  "companyId": null,
+  "role": null,
+  "author": null,
+  "createTime": null
+}
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "loginUser": {
+      "id": 1,
+      "name": "admin",
+      "phone": "15800968114",
+      "password": "789",
+      "companyId": 1,
+      "role": 7,
+      "author": "",
+      "createTime": "2017-12-12"
+    },
+    "companyMap": {
+      "1": "洛阳",
+      "2": "驻马店"
+    }
+  }
+}
+
+
+接口名：	/user/list
+TYPE：	
+
+参数列表：
+
+  参数名				是否必须				含义
+{
+  "companyId": null,
+  "startDate": null,
+  "endDate": null,
+  "customerName": null,
+  "state": null,
+  "pageNo": 0,
+  "count": 20
+}
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    {
+      "id": 11,
+      "name": "jerry",
+      "phone": "15820968121",
+      "password": "123",
+      "companyId": 2,
+      "role": 0,
+      "author": "",
+      "createTime": "2017-12-24"
+    },
+    {
+      "id": 10,
+      "name": "jack",
+      "phone": "15800968121",
+      "password": "123",
+      "companyId": 2,
+      "role": 0,
+      "author": "",
+      "createTime": "2017-12-24"
+    },
+    {
+      "id": 9,
+      "name": "zzz",
+      "phone": "15334347865",
+      "password": "123",
+      "companyId": 2,
+      "role": 0,
+      "author": "",
+      "createTime": "2017-12-20"
+    },
+    {
+      "id": 1,
+      "name": "admin",
+      "phone": "15800968114",
+      "password": "789",
+      "companyId": 1,
+      "role": 7,
+      "author": "",
+      "createTime": "2017-12-12"
+    }
+  ]
+}
+
+
+接口名：	/user/create
+TYPE：	POST
+
+参数列表：
+
+  参数名				是否必须				含义
+{
+  "id": 12,
+  "name": "alex",
+  "phone": "15822968121",
+  "password": "123",
+  "companyId": 2,
+  "role": null,
+  "author": null,
+  "createTime": null
+}
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": 12,
+    "name": "alex",
+    "phone": "15822968121",
+    "password": "123",
+    "companyId": 2,
+    "role": null,
+    "author": null,
+    "createTime": null
+  }
+}
+
+
+接口名：	/user/delete
+TYPE：	GET
+
+参数列表：
+
+  参数名				是否必须				含义
+    id                  Y
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": 1
+}
+
+
+接口名：	/user/update
+TYPE：	POST
+
+参数列表：
+
+  参数名				是否必须				含义
+{
+  "id": 1,
+  "name": null,
+  "phone": "15800968114",
+  "password": "789",
+  "companyId": 1,
+  "role": null,
+  "author": null,
+  "createTime": null
+}
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": 1
+}
+
+

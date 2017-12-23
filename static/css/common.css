@@ -1,0 +1,29 @@
+.search{
+    margin:15px 0;
+}
+.search .search-label{
+    font-size: 14px;
+    margin : 0 10px 0 30px;
+}
+.search .search-label:first-of-type{
+    margin : 0 10px 0 0;
+}
+.page{
+    float: right;
+    margin-top: 15px;
+}
+.m-left20{
+    margin-left: 20px!important;
+}
+.m-left30{
+    margin-left: 30px!important;
+}
+.border-top-left{
+    border-top: 1px solid #e5e5e5;
+    border-left: 1px solid #e5e5e5;
+}
+.border-bottom-right{
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
