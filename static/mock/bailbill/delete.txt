@@ -1,0 +1,16 @@
+接口名：	/bailbill/delete
+TYPE：	
+
+参数列表：
+
+参数名				是否必须				含义
+
+id				     	Y			    5 //保证金ID
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": 1
+}
+

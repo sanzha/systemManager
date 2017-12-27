@@ -1,0 +1,103 @@
+﻿{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "bailBillList": [
+            {
+                "id": 27,
+                "billId": 53,
+                "returnBail": 1000,
+                "returnedBail": 0,
+                "incomeBail": 0,
+                "author": "张少",
+                "createTime": "2017-12-20",
+                "remark": "2017年12月20日借款：50000"
+            }
+        ],
+        "returnBillList": [
+            {
+                "id": 163,
+                "billId": 53,
+                "returnDate": "2017-12-24",
+                "returnPrincipal": 0,
+                "returnInterest": 1000,
+                "otherCharge": 100,
+                "state": 1,
+                "author": "张少",
+                "createTime": "2017-12-20",
+                "remark": "2017年12月20日借款：50000",
+                "mark": ""
+            },
+            {
+                "id": 143,
+                "billId": 53,
+                "returnDate": "2017-12-23",
+                "returnPrincipal": 10000,
+                "returnInterest": 1000,
+                "otherCharge": 100,
+                "state": 1,
+                "author": "",
+                "createTime": "2017-12-20",
+                "remark": "",
+                "mark": "dsf"
+            },
+            {
+                "id": 142,
+                "billId": 53,
+                "returnDate": "2017-12-22",
+                "returnPrincipal": 10000,
+                "returnInterest": 1000,
+                "state": 1,
+                "author": "张少",
+                "createTime": "2017-12-20",
+                "remark": "2017年12月20日借款：50000",
+                "mark": ""
+            },
+            {
+                "id": 141,
+                "billId": 53,
+                "returnDate": "2017-12-21",
+                "returnPrincipal": 10000,
+                "returnInterest": 1000,
+                "otherCharge": 100,
+                "state": 1,
+                "author": "admin",
+                "createTime": "2017-12-20",
+                "remark": "",
+                "mark": "ujhj"
+            }
+        ],
+        "bill": {
+            "id": 53,
+            "customerId": 8,
+            "companyId": 2,
+            "amount": 50000,
+            "periods": 5,
+            "period": 1,
+            "eachPrincipal": 10000,
+            "eachInterest": 1000,
+            "loanDate": "2017-12-20",
+            "bail": 1000,
+            "serviceCharge": 500,
+            "visitCharge": 500,
+            "lawCharge": 0,
+            "otherCharge": 100,
+            "returnedPrincipal": 10000,
+            "returnedInterest": 2000,
+            "author": "张少",
+            "createTime": "2017-12-20",
+            "mark": "大是分开；l"
+        },
+        "customer": {
+            "id": 8,
+            "name": "bbb",
+            "phone": "15823566735",
+            "address": "",
+            "isBlack": 0,
+            "openid": "",
+            "iDCardNo": "",
+            "author": "",
+            "createTime": "2017-12-20"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "billId": 31,
+        "returnDate": "2017-12-25",
+        "returnPrincipal": 10,
+        "returnInterest": 7,
+        "otherCharge": 10000,
+        "state": 0,
+        "author": "admin",
+        "createTime": "2017-12-25",
+        "remark": "dsfklk",
+        "mark": "adsf"
+    }
+}

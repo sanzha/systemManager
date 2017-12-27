@@ -1,0 +1,49 @@
+接口名：	/bill/create
+TYPE：	POST
+
+参数列表：
+
+参数名				是否必须				含义
+companyId				     			1
+customerId				     			12
+loanDate		             			2017-12-25
+amount				    				100000
+periods				     				10
+period				     				7
+eachPrincipal				     		10000
+eachInterest				     		1000
+bail				     				10000
+serviceCharge				     		500
+visitCharge				     			500
+lawCharge				     			1000
+otherCharge				     			1000
+mark				     				借款备注
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": 75,
+    "customerId": 12,
+    "companyId": 1,
+    "amount": 100000.00,
+    "periods": 10,
+    "period": 7,
+    "eachPrincipal": 10000.00,
+    "eachInterest": 1000.00,
+    "loanDate": "2017-12-25",
+    "bail": 10000.00,
+    "serviceCharge": 500.00,
+    "visitCharge": 500.00,
+    "lawCharge": 1000.00,
+    "otherCharge": 1000.00,
+    "returnedPrincipal": 0.00,
+    "returnedInterest": 0.00,
+    "author": "",
+    "createTime": "2017-12-25",
+    "mark": "借款备注"
+  }
+}
+
+

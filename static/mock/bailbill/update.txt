@@ -1,0 +1,52 @@
+接口名：	/bailbill/update
+TYPE：	GET
+
+参数列表：
+
+参数名				是否必须				含义
+id				     	Y			     3
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "companyId": 1,
+    "customerName": null,
+    "phone": null,
+    "bail": null,
+    "loanDate": null,
+    "id": 3,
+    "billId": 29,
+    "returnBail": 10000.00,
+    "returnedBail": 0.00,
+    "incomeBail": 0.00,
+    "author": "admin",
+    "createTime": "2017-12-19",
+    "remark": "2017年12月19日借款：100000",
+    "mark": "dahjksad"
+  }
+}
+
+
+接口名：	/bailbill/update
+TYPE：	POST
+
+参数列表：
+
+参数名				是否必须				含义
+id				     				      3
+billId				     				  29
+returnBail				     		      10000
+returnPrincipal				     		  0
+incomeBail				     			  0
+mark				     				  "dahjksad"
+
+返回结果
+{
+  "code": 200,
+  "msg": "success",
+  "data": 1
+}
+
+
