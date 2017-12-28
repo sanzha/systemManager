@@ -51,7 +51,7 @@
             <el-table-column prop="amount" label="贷款金额"  align="center" ></el-table-column>
             <el-table-column prop="eachPrincipal" label="每期应还本金" width="150" align="center" ></el-table-column>
             <el-table-column prop="eachInterest" label="每期应还利息" width="150"  align="center" ></el-table-column>
-            <el-table-column prop="loanDate" label="贷款时间"  align="center" ></el-table-column>
+            <el-table-column prop="loanDate" label="贷款时间" width="100"  align="center" ></el-table-column>
             <el-table-column prop="periods" label="期数"  align="center" ></el-table-column>
             <el-table-column prop="period" label="周期(天)"  align="center" ></el-table-column>
             <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
