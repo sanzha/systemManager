@@ -3,9 +3,9 @@
         <div>
             <el-breadcrumb separator=">">
                 <el-breadcrumb-item>
-                    基础资料
+                    即时消息
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>内部消息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
     </div>

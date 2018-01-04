@@ -3,13 +3,22 @@
         <div>
             <el-breadcrumb separator=">">
                 <el-breadcrumb-item>
-                    基础资料
+                    客户管理
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>客户档案</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="search">
-            <el-input class="input" v-model="searchInfo.customerName" size="small" placeholder="姓名"></el-input>
+            <el-input class="input" v-model="searchInfo.customerName" size="small" placeholder="姓名" clearable></el-input>
+            <span class="search-label m-left20">业务员</span>
+            <el-select v-model="searchInfo.salesmanId" size="small" filterable  clearable placeholder="业务员">
+                <el-option
+                    v-for="item in salesmanDictList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
             <el-button class="m-left20" size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
             <el-button class="m-left20" size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -19,12 +28,16 @@
                     <span v-text="scope.$index+1"></span>
                 </template>
             </el-table-column >
-            <el-table-column prop="name" label="姓名"  align="center" ></el-table-column>
-            <el-table-column prop="phone" label="手机"  align="center" ></el-table-column>
-            <el-table-column prop="address" label="地址"  align="center" ></el-table-column>
-            <el-table-column prop="iDCardNo" label="身份证号码"  align="center" ></el-table-column>
-            <el-table-column prop="createTime" label="创建时间"  align="center" ></el-table-column>
-            <el-table-column  label="操作" align="center">
+            <el-table-column prop="name" label="姓名" width="90" align="center" ></el-table-column>
+            <el-table-column prop="phone" label="手机" width="120" align="center" ></el-table-column>
+            <el-table-column prop="address" label="地址" width="180" align="center" ></el-table-column>
+            <el-table-column prop="iDCardNo" label="身份证号码" width="180" align="center" ></el-table-column>
+            <el-table-column prop="bank" label="开户行" width="120" align="center" ></el-table-column>
+            <el-table-column prop="bankAccount" label="银行账号" width="180" align="center" ></el-table-column>
+            <el-table-column prop="salesman.name" label="业务员" width="160"  align="center" ></el-table-column>
+            <el-table-column prop="mark" label="备注" width="200"  align="center" ></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" width="120" align="center" ></el-table-column>
+            <el-table-column  label="操作" width="180" align="center" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="text" size="small" @click="deleteItem(scope.$index, scope.row)">删除</el-button>
@@ -58,8 +71,35 @@
                     <el-input v-model="newItem.address" class="row"></el-input>
                 </el-form-item>
 
-                <el-form-item size="small" label="身份证号" prop="iDCardNo" >
+                <el-form-item size="small" label="身份证号">
                     <el-input v-model="newItem.iDCardNo" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="开户行">
+                    <el-input v-model="newItem.bank" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="银行账号">
+                    <el-input v-model="newItem.bankAccount" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="业务员">
+                    <el-select v-model="newItem.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                        <el-option
+                            v-for="item in salesmanDictList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item size="small" label="openId">
+                    <el-input v-model="newItem.openId" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="备注">
+                    <el-input v-model="newItem.mark" class="row" type="textarea"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -69,7 +109,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="修改信息" :visible.sync="editItemDialog">
+        <el-dialog title="修改信息" :visible.sync="editItemDialog" center>
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="姓名" prop="name" >
@@ -84,8 +124,35 @@
                     <el-input v-model="editItem.address" class="row"></el-input>
                 </el-form-item>
 
-                <el-form-item size="small" label="身份证号" prop="iDCardNo" >
+                <el-form-item size="small" label="身份证号">
                     <el-input v-model="editItem.iDCardNo" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="开户行">
+                    <el-input v-model="editItem.bank" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="银行账号">
+                    <el-input v-model="editItem.bankAccount" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="业务员">
+                    <el-select v-model="editItem.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                        <el-option
+                            v-for="item in salesmanDictList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item size="small" label="openId">
+                    <el-input v-model="editItem.openId" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="备注">
+                    <el-input v-model="editItem.mark" class="row" type="textarea"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -95,18 +162,18 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="贷款信息" :visible.sync="createBorrowDialog">
+        <el-dialog title="贷款信息" :visible.sync="createBorrowDialog" center>
             <el-form :model="borrowInfo" :rules="rules" ref="borrowInfo" :label-position="'right'" label-width="120px" inline-message>
 
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left"  label="公司" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.name" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right"  label="姓名" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.phone" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -114,7 +181,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="手机" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.name" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -139,13 +206,13 @@
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="周期" prop="" >
+                        <el-form-item size="small" class="label-left" label="周期(天)" prop="" >
                             <el-input v-model="borrowInfo.name" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="每期应还本金" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.phone" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -189,6 +256,14 @@
                     </el-col>
                 </el-row>
 
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item size="small" class="label-left" label="业务员" prop="" >
+                            <el-input v-model="borrowInfo.salesman" class="row" :disabled="true"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
                 <el-row>
                     <el-col :span="24">
                         <el-form-item size="small" class="label-left" label="备注" prop="" >
@@ -215,9 +290,11 @@
                 searchInfo:{
                     pageNo:0,
                     count:10,
-                    customerName:''
+                    customerName:'',
+                    salesmanId:''
                 },
                 tableData:[],
+                salesmanList:[],    //业务员列表
                 newItem:{},
                 editItem:{},
                 borrowInfo:{},
@@ -236,7 +313,20 @@
             }
         },
         created(){
-            this.search();
+            this.getDict();
+        },
+        computed:{
+            salesmanDictList(){
+                let result = [];
+                this.salesmanList.forEach(function (item,index,arr) {
+                    let obj = {
+                        id:item.id,
+                        name:item.name + "(" + item.phone + ")"
+                    };
+                    result.push(obj);
+                });
+                return result;
+            }
         },
         methods: {
             handleSizeChange(val){
@@ -253,6 +343,26 @@
                     this.$refs[formName].resetFields();
                 }
             },
+            getDict(){
+                var self = this;
+                const p1 = new Promise(function(resolve, reject) {
+                    resource.userList({
+
+                    },function(result){
+                        if(result.code==200){
+                            resolve(result);
+                        }else{
+                            reject(result);
+                        }
+                    });
+                });
+                p1.then(function(json) {
+                    self.salesmanList = json.data;
+                    self.search();
+                }, function(json) {
+                    self.$message.error(json.msg);
+                });
+            },
             triggerSearch(){
                 if(this.pageNo == 1){
                     this.search();
@@ -261,10 +371,14 @@
                 }
             },
             search(){
-                let self = this;
+                const self = this;
                 resource.customerList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
+                        self.tableData.forEach(function (item,index,arr) {
+                            item.salesman = utils.convertDict(item.userId,self.salesmanDictList);
+                            item.createTime = item.createTime.substring(0,10);
+                        });
                         self.total_count = result.data.total_count;
                     }else{
                         self.$message.error(result.msg);
@@ -286,6 +400,7 @@
                                     type: 'success'
                                 });
                                 self.addItemDialog = false;
+                                self.search();
                             }else{
                                 self.$message.error(result.msg);
                             }
@@ -301,7 +416,13 @@
                     id:row.id,
                     name:row.name,
                     phone:row.phone,
-                    address:row.address
+                    address:row.address,
+                    iDCardNo:row.iDCardNo,
+                    bank:row.bank,
+                    bankAccount:row.bankAccount,
+                    salesmanId:row.salesman.id,
+                    openid:row.openid,
+                    mark:row.mark
                 };
                 this.resetForm('editItem');
                 this.editItemDialog = true;
@@ -312,12 +433,12 @@
                     if (valid) {
                         resource.customerUpdate(self.editItem,function(result){
                             if(result.code==200){
-                                utils.propertyExtend(self.editItem,self.tmpRow);
                                 self.$message({
                                     message: result.msg,
                                     type: 'success'
                                 });
                                 self.editItemDialog = false;
+                                self.search();
                             }else{
                                 self.$message.error(result.msg);
                             }
@@ -340,6 +461,7 @@
                                 message: result.msg,
                                 type: 'success'
                             });
+                            self.search();
                         }else{
                             self.$message.error(result.msg);
                         }

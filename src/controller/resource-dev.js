@@ -5,6 +5,22 @@ let postMethods = {
     customerAdd:domain +'customer/create',  //新增客户
     customerUpdate:domain +'customer/update',   //修改客户
     customerDel:domain +'customer/delete',  //删除客户
+
+    userList:domain +'user/list',  //员工列表
+
+    login:domain +'login',  //员工列表
+
+    loanList:domain +'bill/list',  //借款列表
+
+
+
+
+    repaymentList:domain +'returnbill/list',  //还款列表
+
+
+
+
+    bailList:domain +'bailbill/list',  //还款列表
 };
 
 const outExports = {

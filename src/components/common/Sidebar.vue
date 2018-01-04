@@ -31,25 +31,25 @@
                 items: [
                     {
                         icon: 'el-icon-setting',
-                        index: 'readme',
+                        index: '/readme',
                         title: '首页'
                     },
                     {
                         icon: 'el-icon-menu',
                         index: '2',
-                        title: '基础资料',
+                        title: '客户管理',
                         subs: [
                             {
-                                index: 'customer',
-                                title: '客户管理'
+                                index: '/customer',
+                                title: '客户档案'
                             },
                             {
-                                index: 'user',
-                                title: '员工管理'
+                                index: '/customer/follow',
+                                title: '客户跟进'
                             },
                             {
-                                index: 'organization',
-                                title: '组织管理'
+                                index: '/customer/credit',
+                                title: '征信档案'
                             }
                         ]
                     },
@@ -59,18 +59,21 @@
                         title: '业务管理',
                         subs: [
                             {
-                                index: 'loans',
+                                index: '/business/loans',
                                 title: '贷款管理'
                             },{
-                                index: 'repayment',
+                                index: '/business/repayment',
                                 title: '还款管理'
                             },{
-                                index: 'deposit',
+                                index: '/business/deposit',
                                 title: '保证金管理'
                             },{
-                                index: 'commission',
+                                index: '/business/commission',
                                 title: '佣金管理'
-                            },
+                            },{
+                                index: '/business/cashFlow',
+                                title: '现金流水'
+                            }
                         ]
                     },
                     {
@@ -79,18 +82,37 @@
                         title: '即时消息',
                         subs:[
                             {
-                                index: 'message',
-                                title: '短信消息'
+                                index: '/message/inner',
+                                title: '内部消息'
                             },{
-                                index: 'wechat',
-                                title: '微信消息'
+                                index: '/message/out',
+                                title: '外部消息'
                             },
                         ]
                     },
                     {
+                        icon: 'el-icon-printer',
+                        index: '5',
+                        title: '基础资料',
+                        subs:[
+                            {
+                                index: '/base/organization',
+                                title: '组织管理'
+                            },{
+                                index: '/base/user',
+                                title: '员工管理'
+                            },{
+                                index: '/base/rote',
+                                title: '权限设置'
+                            },{
+                                index: '/base/log',
+                                title: '操作日志'
+                            }
+                        ]
+                    },{
                         icon: 'el-icon-document',
-                        index: 'statement',
-                        title: '报表管理',
+                        index: '/report/statement',
+                        title: '报表管理'
                     }
                 ]
             }

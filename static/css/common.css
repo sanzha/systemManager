@@ -8,9 +8,18 @@
 .search .search-label:first-of-type{
     margin : 0 10px 0 0;
 }
+.search .frame{
+    width: 150px;
+}
 .page{
     float: right;
     margin-top: 15px;
+}
+.m-left0{
+    margin-left: 0!important;
+}
+.m-top10{
+    margin-top: 10px!important;
 }
 .m-left20{
     margin-left: 20px!important;

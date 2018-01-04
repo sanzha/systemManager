@@ -18,66 +18,92 @@ export default new Router({
                     component: resolve => require(['../components/page/Readme.vue'], resolve)
                 },
                 {
+                    //客户管理
                     path: '/customer',
-                    component: resolve => require(['../components/page/customer.vue'], resolve)
+                    component: resolve => require(['../components/common/vessel.vue'], resolve),
+                    children:[
+                        {
+                            path: '',
+                            component: resolve => require(['../components/page/customer/customer.vue'], resolve)
+                        },{
+                            path: 'follow',
+                            component: resolve => require(['../components/page/customer/follow.vue'], resolve)
+                        },{
+                            path: 'credit',
+                            component: resolve => require(['../components/page/customer/credit.vue'], resolve)
+                        }
+                    ]
                 },
                 {
-                    path: '/user',
-                    component: resolve => require(['../components/page/user.vue'], resolve)
+                    //业务管理
+                    path: '/business',
+                    component: resolve => require(['../components/common/vessel.vue'], resolve),
+                    children:[
+                        {
+                            path: 'loans',
+                            component: resolve => require(['../components/page/business/loans.vue'], resolve)
+                        },{
+                            path: 'repayment',
+                            component: resolve => require(['../components/page/business/repayment.vue'], resolve)
+                        },{
+                            path: 'deposit',
+                            component: resolve => require(['../components/page/business/deposit.vue'], resolve)
+                        },{
+                            path: 'commission',
+                            component: resolve => require(['../components/page/business/commission.vue'], resolve)
+                        },{
+                            path: 'cashFlow',
+                            component: resolve => require(['../components/page/business/cashFlow.vue'], resolve)
+                        }
+                    ]
                 },
                 {
-                    path: '/organization',
-                    component: resolve => require(['../components/page/organization.vue'], resolve)
-                },{
-                    path: '/loans',
-                    component: resolve => require(['../components/page/loans.vue'], resolve)
-                },{
-                    path: '/repayment',
-                    component: resolve => require(['../components/page/repayment.vue'], resolve)
-                },{
-                    path: '/deposit',
-                    component: resolve => require(['../components/page/deposit.vue'], resolve)
-                },{
-                    path: '/commission',
-                    component: resolve => require(['../components/page/commission.vue'], resolve)
-                },{
+                    //即时消息
                     path: '/message',
-                    component: resolve => require(['../components/page/message.vue'], resolve)
-                },{
-                    path: '/wechat',
-                    component: resolve => require(['../components/page/wechat.vue'], resolve)
-                },{
-                    path: '/statement',
-                    component: resolve => require(['../components/page/statement.vue'], resolve)
+                    component: resolve => require(['../components/common/vessel.vue'], resolve),
+                    children:[
+                        {
+                            path: 'inner',
+                            component: resolve => require(['../components/page/message/inner.vue'], resolve)
+                        },{
+                            path: 'out',
+                            component: resolve => require(['../components/page/message/out.vue'], resolve)
+                        }
+                    ]
                 },
                 {
-                    path: '/vuetable',
-                    component: resolve => require(['../components/page/VueTable.vue'], resolve)     // vue-datasource组件
+                    //基础资料
+                    path: '/base',
+                    component: resolve => require(['../components/common/vessel.vue'], resolve),
+                    children:[
+                        {
+                            path: 'organization',
+                            component: resolve => require(['../components/page/base/organization.vue'], resolve)
+                        },{
+                            path: 'user',
+                            component: resolve => require(['../components/page/base/user.vue'], resolve)
+                        },{
+                            path: 'rote',
+                            component: resolve => require(['../components/page/base/rote.vue'], resolve)
+                        },{
+                            path: 'log',
+                            component: resolve => require(['../components/page/base/log.vue'], resolve)
+                        }
+                    ]
                 },
                 {
-                    path: '/baseform',
-                    component: resolve => require(['../components/page/BaseForm.vue'], resolve)
+                    //报表管理
+                    path: '/report',
+                    component: resolve => require(['../components/common/vessel.vue'], resolve),
+                    children:[
+                        {
+                            path: 'statement',
+                            component: resolve => require(['../components/page/report/statement.vue'], resolve)
+                        }
+                    ]
                 },
-                {
-                    path: '/vueeditor',
-                    component: resolve => require(['../components/page/VueEditor.vue'], resolve)    // Vue-Quill-Editor组件
-                },
-                {
-                    path: '/markdown',
-                    component: resolve => require(['../components/page/Markdown.vue'], resolve)     // Vue-Quill-Editor组件
-                },
-                {
-                    path: '/upload',
-                    component: resolve => require(['../components/page/Upload.vue'], resolve)       // Vue-Core-Image-Upload组件
-                },
-                {
-                    path: '/basecharts',
-                    component: resolve => require(['../components/page/BaseCharts.vue'], resolve)   // vue-schart组件
-                },
-                {
-                    path: '/drag',
-                    component: resolve => require(['../components/page/DragList.vue'], resolve)    // 拖拽列表组件
-                }
+
+
             ]
         },
         {

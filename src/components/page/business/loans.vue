@@ -11,6 +11,8 @@
         <div class="search">
             <span class="search-label">贷款时间</span>
             <el-date-picker
+                :editable="false"
+                clearable
                 class="frame"
                 v-model="searchInfo.borrowDateBegin"
                 type="date"
@@ -19,6 +21,8 @@
             </el-date-picker>
             <span>-</span>
             <el-date-picker
+                :editable="false"
+                clearable
                 class="frame"
                 v-model="searchInfo.borrowDateEnd"
                 type="date"
@@ -29,13 +33,13 @@
             <el-select v-model="searchInfo.organization" class="frame" size="small" placeholder="全部" clearable>
                 <el-option
                     v-for="item in organizationList"
-                    :key="item.code"
-                    :label="item.value"
-                    :value="item.code"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
                 ></el-option>
             </el-select>
             <span class="search-label">姓名</span>
-            <el-input class="input frame" v-model="searchInfo.customerName" size="small" placeholder="姓名"></el-input>
+            <el-input class="input frame" v-model="searchInfo.customerName" size="small" placeholder="姓名" clearable></el-input>
             <el-button size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
         </div>
 
@@ -45,7 +49,7 @@
                     <span v-text="scope.$index+1"></span>
                 </template>
             </el-table-column >
-            <el-table-column prop="companyId" label="公司" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
             <el-table-column prop="name" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机"  width="150" align="center" ></el-table-column>
             <el-table-column prop="amount" label="贷款金额"  align="center" ></el-table-column>
@@ -61,6 +65,7 @@
             <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
             <el-table-column prop="returnedPrincipal" label="已还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnedInterest" label="已还利息"  align="center" ></el-table-column>
+            <el-table-column prop="salesman" label="业务员"  align="center" ></el-table-column>
             <el-table-column  label="操作"  align="center" width="100" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="showDetail(scope.$index, scope.row)">查看</el-button>
@@ -86,75 +91,77 @@
                     <el-row class="border-top-left">
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>公司:</span>
-                            <span>地狱边境</span>
+                            <span v-text="detail.baseInfo.company.name"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>姓名:</span>
-                            <span>AlexMason</span>
+                            <span v-text="detail.baseInfo.customerName"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>手机:</span>
-                            <span>18621576212</span>
+                            <span v-text="detail.baseInfo.phone"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>贷款金额:</span>
-                            <span>20000.00</span>
+                            <span v-text="detail.baseInfo.amount"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>期数:</span>
-                            <span>10</span>
+                            <span v-text="detail.baseInfo.periods"></span>
+                        </el-col>
+                        <el-col :span="6" class="border-bottom-right cell">
+                            <span>周期:</span>
+                            <span v-text="detail.baseInfo.period"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>每期应还本金:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.eachPrincipal"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>每期应还利息:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.eachInterest"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>保证金:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.bail"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>服务费:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.serviceCharge"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>家访费:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.visitCharge"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>诉讼费:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.lawCharge"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>其它费用:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.otherCharge"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>已还本金:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.returnedPrincipal"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>已还利息:</span>
-                            <span>2000</span>
+                            <span v-text="detail.baseInfo.returnedInterest"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
-                            <span>&nbsp;</span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>&nbsp;</span>
+                            <span>业务员:</span>
+                            <span v-text="detail.baseInfo.userId"></span>
                         </el-col>
                         <el-col :span="24" class="border-bottom-right cell">
                             <span>备注:</span>
-                            <span>太阳出来咿呦喂,天地宽来么咿呦喂,青山脚下水弯弯来,曲折折来十八弯,荆江水呀么鱼摆摆,肥冬冬呀么咿呦喂,没得海椒麻辣辣,不得吃唉呀咿呦</span>
+                            <span v-text="detail.baseInfo.mark"></span>
                         </el-col>
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="还款列表">
                     <el-button class="m-bottom10" size="small" type="primary"  @click="batchRrepayment">提前还款</el-button>
-                    <el-table :data="detail.repaymentInfo" border max-height="300" :cell-style="{padding:'3px 0'}">
+                    <el-table :data="detail.returnBillList" border max-height="300" :cell-style="{padding:'3px 0'}">
                         <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
                             <template scope="scope">
                                 <span v-text="scope.$index+1"></span>
@@ -166,8 +173,9 @@
                         <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
                         <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
                         <el-table-column prop="" label="合计"  align="center" ></el-table-column>
-                        <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
+                        <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
                         <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
+                        <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
                         <el-table-column  label="操作" width="120" align="center" fixed="right">
                             <template scope="scope">
                                 <el-button type="text" size="small" @click="handleEditRepaymentInfo(scope.$index, scope.row)">编辑</el-button>
@@ -211,7 +219,7 @@
                 </el-dialog>
 
                 <el-tab-pane label="保证金列表">
-                    <el-table :data="detail.depositInfo" border max-height="300" :cell-style="{padding:'3px 0'}">
+                    <el-table :data="detail.bailBillList" border max-height="300" :cell-style="{padding:'3px 0'}">
                         <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
                             <template scope="scope">
                                 <span v-text="scope.$index+1"></span>
@@ -223,10 +231,13 @@
                         <el-table-column prop="iDCardNo" label="已退金额"  align="center" ></el-table-column>
                         <el-table-column prop="createTime" label="转收入金额" width="120"  align="center" ></el-table-column>
                         <el-table-column prop="createTime" label="保证金"  align="center" ></el-table-column>
+                        <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
+                        <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
                         <el-table-column prop="createTime" label="备注"  align="center" ></el-table-column>
-                        <el-table-column  label="操作" align="center" fixed="right">
+                        <el-table-column  label="操作" align="center" width="120" fixed="right">
                             <template scope="scope">
                                 <el-button type="text" size="small" @click="handleEditBailInfo(scope.$index, scope.row)">编辑</el-button>
+                                <el-button type="text" size="small" @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -290,8 +301,8 @@
                 tableData:[],
                 detail:{
                     baseInfo:{},
-                    repaymentInfo:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
-                    depositInfo:[{}]
+                    returnBillList:[],
+                    bailBillList:[]
                 },
                 repayItem:{},   //还款信息
                 bailItem:{},    //保证金信息
@@ -301,21 +312,7 @@
                 rules:{
 
                 },
-                organizationList:[
-                    {
-                        code:1,
-                        value:'冰帝'
-                    },{
-                        code:2,
-                        value:'诸神'
-                    },{
-                        code:3,
-                        value:'秩序'
-                    },{
-                        code:4,
-                        value:'地狱边境'
-                    }
-                ]
+                organizationList:organizationList
             }
         },
         created(){
@@ -340,9 +337,20 @@
             },
             search(){
                 let self = this;
+                if( this.searchInfo.borrowDateBegin!='' && this.searchInfo.borrowDateEnd!= ''
+                    && this.searchInfo.borrowDateEnd - this.searchInfo.borrowDateBegin < 0 ){
+                    this.$message.error('结束时间需大于开始时间');
+                    this.searchInfo.borrowDateBegin = '';
+                    this.searchInfo.borrowDateEnd = '';
+                    return;
+                }
                 resource.loanList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
+                        self.tableData.forEach(function (item,index,arr) {
+                           item.company = utils.convertDict(item.companyId,organizationList);
+                           item.loanDate = item.loanDate.substring(0,10);
+                        });
                         self.total_count = result.data.total_count;
                     }else{
                         self.$message.error(result.msg);
@@ -350,8 +358,22 @@
                 });
             },
             showDetail(index,row){
-                this.detailDialog = true;
-
+                let self = this;
+                resource.loanDetail({
+                    id:row.id
+                },function(result){
+                    if(result.code==200){
+                        self.detail.baseInfo = result.data.bill;
+                        self.detail.baseInfo.customerName = row.name;
+                        self.detail.baseInfo.phone = row.phone;
+                        self.detail.baseInfo.company = utils.convertDict(self.detail.baseInfo.companyId,organizationList)
+                        self.detail.returnBillList = result.data.returnBillList;
+                        self.detail.bailBillList = result.data.bailBillList;
+                        self.detailDialog = true;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
             },
             deleteItem(index, row){
                 let self = this;
@@ -418,6 +440,25 @@
             /**保证金列表-保存编辑信息**/
             saveBailInfo(){
                 this.bailInfoDialog = false;
+            },
+            /**保证金列表-确认处理**/
+            confirmHandle(index, row){
+                var self = this;
+                this.$confirm('是否完成保证金处理?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    self.$message({
+                        message: '已完成保证金处理',
+                        type: 'success'
+                    });
+                }).catch(() => {
+                    self.$message({
+                        type: 'info',
+                        message: '已取消处理'
+                    });
+                });
             }
         }
     }

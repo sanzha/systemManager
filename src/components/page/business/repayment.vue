@@ -68,6 +68,7 @@
             <el-table-column prop="" label="合计"  align="center" ></el-table-column>
             <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
             <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
+            <el-table-column prop="confirmRepayDate" label="确认时间" width="100" align="center" ></el-table-column>
             <el-table-column  label="操作" width="120" align="center" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>

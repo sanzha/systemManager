@@ -5,7 +5,7 @@
                 <el-breadcrumb-item>
                     基础资料
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>操作日志</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
     </div>

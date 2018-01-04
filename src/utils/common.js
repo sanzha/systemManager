@@ -22,4 +22,14 @@ utils.propertyExtend = (source,target)=>{
     }
 };
 
+utils.convertDict = (id,arr) =>{
+    for(let i=0;i<arr.length;i++){
+        let item = arr[i];
+        if(id==item.id){
+            return item;
+        }
+    }
+    return {};
+};
+
 export default utils;

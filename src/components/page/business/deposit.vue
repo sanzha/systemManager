@@ -33,15 +33,17 @@
             <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机" width="110" align="center" ></el-table-column>
             <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
-            <el-table-column prop="loanDate" label="借款时间" width="100" align="center" ></el-table-column>
             <el-table-column prop="returnBail" label="待退金额"  align="center" ></el-table-column>
             <el-table-column prop="returnedBail" label="已退金额"  align="center" ></el-table-column>
             <el-table-column prop="incomeBail" label="转收入金额" width="120" align="center" ></el-table-column>
             <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
+            <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
+            <el-table-column prop="confirmDate" width="100" label="确认时间"  align="center" ></el-table-column>
             <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
-            <el-table-column  label="操作"  align="center" width="100" fixed="right">
+            <el-table-column  label="操作"  align="center" width="120" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="text" size="small" @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -160,6 +162,24 @@
                     } else {
 
                     }
+                });
+            },
+            confirmHandle(index, row){
+                var self = this;
+                this.$confirm('是否完成保证金处理?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    self.$message({
+                        message: '已完成保证金处理',
+                        type: 'success'
+                    });
+                }).catch(() => {
+                    self.$message({
+                        type: 'info',
+                        message: '已取消处理'
+                    });
                 });
             }
         }

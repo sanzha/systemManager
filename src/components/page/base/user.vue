@@ -32,12 +32,16 @@
             </el-table-column >
             <el-table-column prop="companyId" label="公司"  align="center" ></el-table-column>
             <el-table-column prop="name" label="姓名"  align="center" ></el-table-column>
-            <el-table-column prop="phone" label="手机"  align="center" ></el-table-column>
+            <el-table-column prop="phone" label="手机" width="120" align="center" ></el-table-column>
+            <el-table-column prop="bank" label="开户行"  align="center" ></el-table-column>
+            <el-table-column prop="bankNo" label="银行账号"  align="center" ></el-table-column>
+            <el-table-column prop="isLeave" label="是否离职"  align="center" ></el-table-column>
+            <el-table-column prop="openId" label="openId"  align="center" ></el-table-column>
+            <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
             <el-table-column prop="createTime" label="	创建时间"  align="center" ></el-table-column>
-            <el-table-column  label="操作"  align="center" width="100" fixed="right">
+            <el-table-column  label="操作"  align="center" width="70" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="deleteItem(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -55,14 +59,6 @@
         <el-dialog title="新增员工" :visible.sync="addItemDialog" center>
             <el-form :model="newItem" :rules="rules" ref="newItem" :label-position="'right'" label-width="150px" inline-message>
 
-                <el-form-item size="small" label="姓名" prop="name" >
-                    <el-input v-model="newItem.name" class="row"></el-input>
-                </el-form-item>
-
-                <el-form-item size="small" label="手机" prop="name" >
-                    <el-input v-model="newItem.phone" class="row"></el-input>
-                </el-form-item>
-
                 <el-form-item size="small" label="公司" prop="name" >
                     <el-select class="row" v-model="newItem.organizationCode" size="small" placeholder="请选择">
                         <el-option
@@ -72,6 +68,30 @@
                             :value="item.code"
                         ></el-option>
                     </el-select>
+                </el-form-item>
+
+                <el-form-item size="small" label="姓名" prop="name" >
+                    <el-input v-model="newItem.name" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="手机" prop="name" >
+                    <el-input v-model="newItem.phone" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="开户行" prop="name" >
+                    <el-input v-model="newItem.bank" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="银行账号" prop="name" >
+                    <el-input v-model="newItem.bankNo" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="是否离职" prop="name" >
+                    <el-input v-model="newItem.isLeave" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="openId" prop="name" >
+                    <el-input v-model="newItem.openId" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="密码" prop="name" >
@@ -92,14 +112,6 @@
         <el-dialog title="员工信息" :visible.sync="editItemDialog" center>
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
-                <el-form-item size="small" label="姓名" prop="name" >
-                    <el-input v-model="editItem.phone" class="row"></el-input>
-                </el-form-item>
-
-                <el-form-item size="small" label="手机" prop="name" >
-                    <el-input v-model="editItem.phone" class="row"></el-input>
-                </el-form-item>
-
                 <el-form-item size="small" label="公司" prop="name" >
                     <el-select class="row" v-model="editItem.organizationCode" size="small" placeholder="请选择">
                         <el-option
@@ -109,6 +121,30 @@
                             :value="item.code"
                         ></el-option>
                     </el-select>
+                </el-form-item>
+
+                <el-form-item size="small" label="姓名" prop="name" >
+                    <el-input v-model="editItem.phone" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="手机" prop="name" >
+                    <el-input v-model="editItem.phone" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="开户行" prop="name" >
+                    <el-input v-model="editItem.bank" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="银行账号" prop="name" >
+                    <el-input v-model="editItem.bankNo" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="是否离职" prop="name" >
+                    <el-input v-model="editItem.isLeave" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="openId" prop="name" >
+                    <el-input v-model="editItem.openId" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="密码" prop="name" >
@@ -154,6 +190,11 @@
         },
         created(){
             this.search();
+        },
+        computed:{
+            sequenceNumber(num){
+                return num == this.tableData.length ? num : '合计';
+            }
         },
         methods:{
             handleSizeChange(val){
@@ -230,26 +271,7 @@
 
                     }
                 });
-            },
-            deleteItem(index, row){
-                var self = this;
-                this.$confirm('此操作将永久删除, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    self.$message({
-                        message: '删除成功',
-                        type: 'success'
-                    });
-
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            },
+            }
         }
     }
 </script>
