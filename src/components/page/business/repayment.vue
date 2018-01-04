@@ -125,7 +125,7 @@
                 pageNo :1,
                 total_count:50,
                 searchInfo:{
-                    pageNo:0,
+                    pageNo:1,
                     count:10,
                     organization:'',
                     repaymentDateBegin:'',
@@ -158,7 +158,7 @@
             },
             handleCurrentChange(val){
                 this.pageNo = val;
-                this.searchInfo.pageNo = val - 1;
+                this.searchInfo.pageNo = val;
                 this.search();
             },
             handleSelectionChange(val){

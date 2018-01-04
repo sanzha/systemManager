@@ -98,7 +98,7 @@
                 pageNo :1,
                 total_count:null,
                 searchInfo:{
-                    pageNo:0,
+                    pageNo:1,
                     count:10,
                     name:'',
                     organizationCode:''
@@ -120,7 +120,7 @@
             },
             handleCurrentChange(val){
                 this.pageNo = val;
-                this.searchInfo.pageNo = val - 1;
+                this.searchInfo.pageNo = val;
                 this.search();
             },
             resetForm(formName) {

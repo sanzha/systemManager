@@ -12,9 +12,10 @@
             <span class="search-label">贷款时间</span>
             <el-date-picker
                 :editable="false"
+                value-format="yyyy-MM-dd"
                 clearable
                 class="frame"
-                v-model="searchInfo.borrowDateBegin"
+                v-model="searchInfo.startDate"
                 type="date"
                 size="small"
                 placeholder="开始时间">
@@ -22,15 +23,16 @@
             <span>-</span>
             <el-date-picker
                 :editable="false"
+                value-format="yyyy-MM-dd"
                 clearable
                 class="frame"
-                v-model="searchInfo.borrowDateEnd"
+                v-model="searchInfo.endDate"
                 type="date"
                 size="small"
                 placeholder="结束时间">
             </el-date-picker>
             <span class="search-label">公司</span>
-            <el-select v-model="searchInfo.organization" class="frame" size="small" placeholder="全部" clearable>
+            <el-select v-model="searchInfo.companyId" class="frame" size="small" placeholder="全部" clearable>
                 <el-option
                     v-for="item in organizationList"
                     :key="item.id"
@@ -50,7 +52,7 @@
                 </template>
             </el-table-column >
             <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
-            <el-table-column prop="name" label="姓名"  align="center" ></el-table-column>
+            <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机"  width="150" align="center" ></el-table-column>
             <el-table-column prop="amount" label="贷款金额"  align="center" ></el-table-column>
             <el-table-column prop="eachPrincipal" label="每期应还本金" width="150" align="center" ></el-table-column>
@@ -91,7 +93,7 @@
                     <el-row class="border-top-left">
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>公司:</span>
-                            <span v-text="detail.baseInfo.company.name"></span>
+                            <span v-text="detail.baseInfo.company"></span>
                         </el-col>
                         <el-col :span="6" class="border-bottom-right cell">
                             <span>姓名:</span>
@@ -291,11 +293,11 @@
                 pageNo :1,
                 total_count:50,
                 searchInfo:{
-                    pageNo:0,
+                    pageNo:1,
                     count:10,
-                    borrowDateBegin:'',
-                    borrowDateEnd:'',
-                    organization:'',
+                    startDate:'',
+                    endDate:'',
+                    companyId:'',
                     customerName:''
                 },
                 tableData:[],
@@ -325,7 +327,7 @@
             },
             handleCurrentChange(val){
                 this.pageNo = val;
-                this.searchInfo.pageNo = val - 1;
+                this.searchInfo.pageNo = val;
                 this.search();
             },
             triggerSearch(){
@@ -337,11 +339,11 @@
             },
             search(){
                 let self = this;
-                if( this.searchInfo.borrowDateBegin!='' && this.searchInfo.borrowDateEnd!= ''
-                    && this.searchInfo.borrowDateEnd - this.searchInfo.borrowDateBegin < 0 ){
+                if( this.searchInfo.startDate!='' && this.searchInfo.endDate!= ''
+                    && this.searchInfo.endDate - this.searchInfo.startDate < 0 ){
                     this.$message.error('结束时间需大于开始时间');
-                    this.searchInfo.borrowDateBegin = '';
-                    this.searchInfo.borrowDateEnd = '';
+                    this.searchInfo.startDate = '';
+                    this.searchInfo.endDate = '';
                     return;
                 }
                 resource.loanList(this.searchInfo,function(result){
@@ -364,9 +366,9 @@
                 },function(result){
                     if(result.code==200){
                         self.detail.baseInfo = result.data.bill;
-                        self.detail.baseInfo.customerName = row.name;
+                        self.detail.baseInfo.customerName = row.customerName;
                         self.detail.baseInfo.phone = row.phone;
-                        self.detail.baseInfo.company = utils.convertDict(self.detail.baseInfo.companyId,organizationList)
+                        self.detail.baseInfo.company = row.company.name;
                         self.detail.returnBillList = result.data.returnBillList;
                         self.detail.bailBillList = result.data.bailBillList;
                         self.detailDialog = true;

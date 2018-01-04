@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-
+axios.defaults.withCredentials=true;
 axios.interceptors.request.use(
     config => {
         config.data = qs.stringify(config.data),
@@ -16,8 +16,8 @@ axios.interceptors.request.use(
 );
 
 
-let domain = 'http://gentou.acmefar.com:8088/';
-// let domain = 'http://49.4.66.170:80/';
+// let domain = 'http://gentou.acmefar.com:8088/';
+let domain = 'http://49.4.66.170:80/';
 
 let postMethods = {
     customerList:domain +'customer/list',   //客户列表
