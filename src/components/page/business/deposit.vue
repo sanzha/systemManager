@@ -1,0 +1,172 @@
+<template>
+    <div class="wrap">
+
+        <el-breadcrumb separator=">">
+            <el-breadcrumb-item>
+                业务管理
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>保证金管理</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <div class="search">
+            <span class="search-label">公司</span>
+            <el-select class="frame" v-model="searchInfo.organizationCode" size="small" placeholder="全部" clearable>
+                <el-option
+                    v-for="item in organizationList"
+                    :key="item.code"
+                    :label="item.value"
+                    :value="item.code"
+                ></el-option>
+            </el-select>
+            <span class="search-label">姓名</span>
+            <el-input class="input frame" v-model="searchInfo.name" size="small" placeholder="姓名"></el-input>
+            <el-button size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
+        </div>
+
+        <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
+            <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
+                <template scope="scope">
+                    <span v-text="scope.$index+1"></span>
+                </template>
+            </el-table-column >
+            <el-table-column prop="companyId" label="公司" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
+            <el-table-column prop="phone" label="手机" width="110" align="center" ></el-table-column>
+            <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
+            <el-table-column prop="loanDate" label="借款时间" width="100" align="center" ></el-table-column>
+            <el-table-column prop="returnBail" label="待退金额"  align="center" ></el-table-column>
+            <el-table-column prop="returnedBail" label="已退金额"  align="center" ></el-table-column>
+            <el-table-column prop="incomeBail" label="转收入金额" width="120" align="center" ></el-table-column>
+            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
+            <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
+            <el-table-column  label="操作"  align="center" width="100" fixed="right">
+                <template scope="scope">
+                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <el-pagination class = "page"
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="pageNo"
+                       :page-sizes="[10, 20, 50]"
+                       :page-size="searchInfo.count"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total_count">
+        </el-pagination>
+
+        <el-dialog title="保证金信息" :visible.sync="editItemDialog" center>
+            <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
+
+                <el-form-item size="small" label="待退金额" prop="returnBail" >
+                    <el-input v-model="editItem.returnBail" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="已退金额" prop="returnedBail" >
+                    <el-input v-model="editItem.returnedBail" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="转收入金额" prop="incomeBail" >
+                    <el-input v-model="editItem.incomeBail" class="row"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="保证金" prop="bail" >
+                    <el-input v-model="editItem.bail" class="row" :disabled="true"></el-input>
+                </el-form-item>
+
+                <el-form-item size="small" label="备注">
+                    <el-input v-model="editItem.mark" class="row" type="textarea"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer" align='center'>
+                <el-button size="small" type="primary" @click="updateItem('editItem')">确 定</el-button>
+                <el-button size="small" @click="editItemDialog = false">取 消</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        data(){
+            return {
+                pageNo :1,
+                total_count:null,
+                searchInfo:{
+                    pageNo:0,
+                    count:10,
+                    name:'',
+                    organizationCode:''
+                },
+                tableData:[{}],
+                editItem:{},
+                organizationList:[],
+                editItemDialog:false,
+                rules:{}
+            }
+        },
+        created(){
+            this.search();
+        },
+        methods:{
+            handleSizeChange(val){
+                this.searchInfo.count = val;
+                this.pageNo = 1;
+            },
+            handleCurrentChange(val){
+                this.pageNo = val;
+                this.searchInfo.pageNo = val - 1;
+                this.search();
+            },
+            resetForm(formName) {
+                if( typeof this.$refs[formName]!= 'undefined'  && typeof this.$refs[formName].resetFields == 'function' ){
+                    this.$refs[formName].resetFields();
+                }
+            },
+            triggerSearch(){
+                if(this.pageNo == 1){
+                    this.search();
+                }else{
+                    this.pageNo = 1;
+                }
+            },
+            search(){
+                let self = this;
+                resource.bailList(this.searchInfo,function(result){
+                    if(result.code==200){
+                        self.tableData = result.data.list;
+                        self.total_count = result.data.total_count;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
+            },
+            handleEdit(index, row){
+                this.tmpRow = row;
+                this.editItem = {
+                    id:row.id
+                };
+                this.resetForm('editItem');
+                this.editItemDialog = true;
+            },
+            updateItem(formName){
+                let self = this;
+                this.$refs[formName].validate(function(valid){
+                    if (valid) {
+
+                    } else {
+
+                    }
+                });
+            }
+        }
+    }
+</script>
+<style>
+    .row{
+        width: 80%;
+    }
+</style>

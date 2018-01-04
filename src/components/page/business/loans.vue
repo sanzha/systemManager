@@ -26,7 +26,7 @@
                 placeholder="结束时间">
             </el-date-picker>
             <span class="search-label">公司</span>
-            <el-select v-model="searchInfo.organization" class="frame" size="small" placeholder="全部">
+            <el-select v-model="searchInfo.organization" class="frame" size="small" placeholder="全部" clearable>
                 <el-option
                     v-for="item in organizationList"
                     :key="item.code"
@@ -160,14 +160,14 @@
                                 <span v-text="scope.$index+1"></span>
                             </template>
                         </el-table-column >
-                        <el-table-column prop="name" label="借款摘要"  align="center" ></el-table-column>
-                        <el-table-column prop="phone" label="应还日期"  align="center" ></el-table-column>
-                        <el-table-column prop="address" label="应还本金"  align="center" ></el-table-column>
-                        <el-table-column prop="iDCardNo" label="应还利息"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="其它费用"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="合计"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" width="200" label="备注"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="状态"  align="center" ></el-table-column>
+                        <el-table-column prop="remark" label="借款摘要"  align="center" ></el-table-column>
+                        <el-table-column prop="returnDate" label="应还日期"  align="center" ></el-table-column>
+                        <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
+                        <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
+                        <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
+                        <el-table-column prop="" label="合计"  align="center" ></el-table-column>
+                        <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
+                        <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
                         <el-table-column  label="操作" width="120" align="center" fixed="right">
                             <template scope="scope">
                                 <el-button type="text" size="small" @click="handleEditRepaymentInfo(scope.$index, scope.row)">编辑</el-button>
@@ -427,9 +427,6 @@
     .search .input{
         width: 180px;
         margin-right: 30px;
-    }
-    .search .frame{
-        width: 150px;
     }
     .cell{
         padding: 2px 0 2px 10px;
