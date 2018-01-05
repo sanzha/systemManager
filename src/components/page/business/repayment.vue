@@ -9,18 +9,20 @@
             </el-breadcrumb>
             <div class="search">
                 <span class="search-label">公司</span>
-                <el-select v-model="searchInfo.organization" class="frame" size="small" placeholder="全部">
+                <el-select v-model="searchInfo.companyId" class="frame" size="small" clearable placeholder="全部">
                     <el-option
                         v-for="item in organizationList"
-                        :key="item.code"
-                        :label="item.value"
-                        :value="item.code"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
                     ></el-option>
                 </el-select>
                 <span class="search-label">还款时间</span>
                 <el-date-picker
                     class="frame"
-                    v-model="searchInfo.repaymentDateBegin"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.startDate"
                     type="date"
                     size="small"
                     placeholder="开始时间">
@@ -28,7 +30,9 @@
                 <span>-</span>
                 <el-date-picker
                     class="frame"
-                    v-model="searchInfo.repaymentDateEnd"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.endDate"
                     type="date"
                     size="small"
                     placeholder="结束时间">
@@ -37,12 +41,12 @@
                     <span class="search-label m-left0">姓名</span>
                     <el-input class="input" v-model="searchInfo.customerName" size="small" placeholder="姓名"></el-input>
                     <span class="search-label m-left0">状态</span>
-                    <el-select v-model="searchInfo.organization" class="frame" clearable size="small" placeholder="全部">
+                    <el-select v-model="searchInfo.state" class="frame" clearable size="small" placeholder="全部">
                         <el-option
                             v-for="item in statusList"
-                            :key="item.code"
-                            :label="item.value"
-                            :value="item.code"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
                         ></el-option>
                     </el-select>
                     <el-button size="small" class="search-btn" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
@@ -50,32 +54,40 @@
             </div>
         </div>
 
-        <el-table :data="tableData" border max-height="450" :cell-style="{padding:'3px 0'}" @selection-change="handleSelectionChange">
+        <el-table :data="tableData"
+                  border
+                  max-height="450"
+                  :cell-style="{padding:'3px 0'}"
+                  @selection-change="handleSelectionChange">
+
             <el-table-column
                 type="selection"
                 width="55">
             </el-table-column>
+
             <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
                 <template scope="scope">
                     <span v-text="scope.$index+1"></span>
                 </template>
             </el-table-column >
-            <el-table-column prop="remark" width="280" label="借款摘要"  align="center" ></el-table-column>
-            <el-table-column prop="returnDate" width="100"  label="应还日期"  align="center" ></el-table-column>
+            <el-table-column prop="remark" label="借款摘要" width="280"  align="center" ></el-table-column>
+            <el-table-column prop="returnDate" label="应还日期" width="100"  align="center" ></el-table-column>
             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
-            <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
-            <el-table-column prop="" label="合计"  align="center" ></el-table-column>
-            <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
-            <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
-            <el-table-column prop="confirmRepayDate" label="确认时间" width="100" align="center" ></el-table-column>
+            <el-table-column prop="otherCharge" label="其它费用" width="150" align="center" ></el-table-column>
+            <el-table-column prop="" label="合计" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="mark" label="备注" width="220"  align="center" ></el-table-column>
+            <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
+            <el-table-column prop="confirmRepayDate" label="确认时间" width="100"  align="center" ></el-table-column>
             <el-table-column  label="操作" width="120" align="center" fixed="right">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="confirmRepayment(scope.$index, scope.row)">确认还款</el-button>
+                    <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="confirmRepayment(scope.$index, scope.row)">确认还款</el-button>
                 </template>
             </el-table-column>
+
         </el-table>
+
         <el-pagination class = "page"
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
@@ -127,9 +139,10 @@
                 searchInfo:{
                     pageNo:1,
                     count:10,
-                    organization:'',
-                    repaymentDateBegin:'',
-                    repaymentDateEnd:''
+                    companyId:'',
+                    state:'',
+                    startDate:'',
+                    endDate:''
                 },
                 tableData:[],
                 multipleSelection:[],
@@ -137,14 +150,14 @@
                 rules:{},
                 statusList:[
                     {
-                        code:1,
-                        value:'未还款'
+                        id:0,
+                        name:'未还款'
                     },{
-                        code:2,
-                        value:'已还款'
+                        id:1,
+                        name:'已还款'
                     }
                 ],
-                organizationList:[],
+                organizationList:organizationList,
                 editItemDialog:false
             }
         },
@@ -178,9 +191,20 @@
             },
             search(){
                 let self = this;
+                if( this.searchInfo.startDate!='' && this.searchInfo.endDate!= ''
+                    && new Date(this.searchInfo.endDate) - new Date(this.searchInfo.startDate) < 0 ){
+                    this.$message.error('结束时间需大于开始时间');
+                    this.searchInfo.startDate = '';
+                    this.searchInfo.endDate = '';
+                    return;
+                }
                 resource.repaymentList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
+                        self.tableData.forEach(function (item,index,arr) {
+                            item.returnDate = item.returnDate.substring(0,10);
+                            item.stateLabel = item.state == 1 ? '已还款' : '未还款';
+                        });
                         self.total_count = result.data.total_count;
                     }else{
                         self.$message.error(result.msg);
@@ -188,9 +212,11 @@
                 });
             },
             handleEdit(index, row){
-                this.tmpRow = row;
+                if(row.state==1)return;
                 this.editItem = {
                     id:row.id,
+                    billId:row.billId,
+                    remark:row.remark,
                     returnDate:row.returnDate,
                     returnPrincipal:row.returnPrincipal,
                     returnInterest:row.returnInterest,
@@ -204,14 +230,14 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
-                        resource.customerUpdate(self.editItem,function(result){
+                        resource.repaymentUpdate(self.editItem,function(result){
                             if(result.code==200){
-                                utils.propertyExtend(self.editItem,self.tmpRow);
                                 self.$message({
                                     message: result.msg,
                                     type: 'success'
                                 });
                                 self.editItemDialog = false;
+                                self.search();
                             }else{
                                 self.$message.error(result.msg);
                             }

@@ -28,9 +28,13 @@ let postMethods = {
     userList:domain +'user/list',  //员工列表
     login:domain +'login',  //登陆
     loanList:domain +'bill/list',  //借款列表
-    loanDetail:domain +'bill/detail',  //借款列表
+    loanDetail:domain +'bill/detail',  //借款详情
+    loanDelete:domain +'bill/delete',  //删除借款
     repaymentList:domain +'returnbill/list',  //还款列表
-    bailList:domain +'bailbill/list',  //还款列表
+    repaymentUpdate:domain +'returnbill/update',  //还款信息修改
+    repaymentConfirm:domain +'returnbill/prepayment',  //确认还款
+    bailList:domain +'bailbill/list',  //保证金列表
+    bailUpdate:domain +'bailbill/update',  //保证金信息修改
 };
 
 const outExports = {

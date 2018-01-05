@@ -90,101 +90,105 @@
         <el-dialog width="60%" :visible.sync="detailDialog" center>
             <el-tabs type="border-card">
                 <el-tab-pane label="贷款详细">
-                    <el-row class="border-top-left">
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>公司:</span>
-                            <span v-text="detail.baseInfo.company"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>姓名:</span>
-                            <span v-text="detail.baseInfo.customerName"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>手机:</span>
-                            <span v-text="detail.baseInfo.phone"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>贷款金额:</span>
-                            <span v-text="detail.baseInfo.amount"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>期数:</span>
-                            <span v-text="detail.baseInfo.periods"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>周期:</span>
-                            <span v-text="detail.baseInfo.period"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>每期应还本金:</span>
-                            <span v-text="detail.baseInfo.eachPrincipal"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>每期应还利息:</span>
-                            <span v-text="detail.baseInfo.eachInterest"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>保证金:</span>
-                            <span v-text="detail.baseInfo.bail"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>服务费:</span>
-                            <span v-text="detail.baseInfo.serviceCharge"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>家访费:</span>
-                            <span v-text="detail.baseInfo.visitCharge"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>诉讼费:</span>
-                            <span v-text="detail.baseInfo.lawCharge"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>其它费用:</span>
-                            <span v-text="detail.baseInfo.otherCharge"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>已还本金:</span>
-                            <span v-text="detail.baseInfo.returnedPrincipal"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>已还利息:</span>
-                            <span v-text="detail.baseInfo.returnedInterest"></span>
-                        </el-col>
-                        <el-col :span="6" class="border-bottom-right cell">
-                            <span>业务员:</span>
-                            <span v-text="detail.baseInfo.userId"></span>
-                        </el-col>
-                        <el-col :span="24" class="border-bottom-right cell">
-                            <span>备注:</span>
-                            <span v-text="detail.baseInfo.mark"></span>
-                        </el-col>
-                    </el-row>
+                    <div class="container">
+                        <el-row class="border-top-left">
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>公司:</span>
+                                <span v-text="detail.baseInfo.company.name"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>姓名:</span>
+                                <span v-text="detail.baseInfo.customerName"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>手机:</span>
+                                <span v-text="detail.baseInfo.phone"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>贷款金额:</span>
+                                <span v-text="detail.baseInfo.amount"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>期数:</span>
+                                <span v-text="detail.baseInfo.periods"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>周期:</span>
+                                <span v-text="detail.baseInfo.period"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>每期应还本金:</span>
+                                <span v-text="detail.baseInfo.eachPrincipal"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>每期应还利息:</span>
+                                <span v-text="detail.baseInfo.eachInterest"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>保证金:</span>
+                                <span v-text="detail.baseInfo.bail"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>服务费:</span>
+                                <span v-text="detail.baseInfo.serviceCharge"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>家访费:</span>
+                                <span v-text="detail.baseInfo.visitCharge"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>诉讼费:</span>
+                                <span v-text="detail.baseInfo.lawCharge"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>其它费用:</span>
+                                <span v-text="detail.baseInfo.otherCharge"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>已还本金:</span>
+                                <span v-text="detail.baseInfo.returnedPrincipal"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>已还利息:</span>
+                                <span v-text="detail.baseInfo.returnedInterest"></span>
+                            </el-col>
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>业务员:</span>
+                                <span v-text="detail.baseInfo.userId"></span>
+                            </el-col>
+                            <el-col :span="24" class="border-bottom-right cell">
+                                <span>备注:</span>
+                                <span v-text="detail.baseInfo.mark"></span>
+                            </el-col>
+                        </el-row>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane label="还款列表">
-                    <el-button class="m-bottom10" size="small" type="primary"  @click="batchRrepayment">提前还款</el-button>
-                    <el-table :data="detail.returnBillList" border max-height="300" :cell-style="{padding:'3px 0'}">
-                        <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
-                            <template scope="scope">
-                                <span v-text="scope.$index+1"></span>
-                            </template>
-                        </el-table-column >
-                        <el-table-column prop="remark" label="借款摘要"  align="center" ></el-table-column>
-                        <el-table-column prop="returnDate" label="应还日期"  align="center" ></el-table-column>
-                        <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
-                        <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
-                        <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
-                        <el-table-column prop="" label="合计"  align="center" ></el-table-column>
-                        <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
-                        <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
-                        <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
-                        <el-table-column  label="操作" width="120" align="center" fixed="right">
-                            <template scope="scope">
-                                <el-button type="text" size="small" @click="handleEditRepaymentInfo(scope.$index, scope.row)">编辑</el-button>
-                                <el-button type="text" size="small" @click="confirmRepayment(scope.$index, scope.row)">确认还款</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <div class="container">
+                        <el-button class="m-bottom10" size="small" type="primary"  @click="batchRrepayment">提前还款</el-button>
+                        <el-table :data="detail.returnBillList" border height="270" :cell-style="{padding:'3px 0'}">
+                            <el-table-column label="序号" width="50" scope="scope" align="center">
+                                <template scope="scope">
+                                    <span v-text="scope.$index+1"></span>
+                                </template>
+                            </el-table-column >
+                            <el-table-column prop="remark" label="借款摘要" width="220"  align="center" ></el-table-column>
+                            <el-table-column prop="returnDate" label="应还日期" width="100" align="center" ></el-table-column>
+                            <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
+                            <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
+                            <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
+                            <el-table-column prop="" label="合计"  align="center" ></el-table-column>
+                            <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
+                            <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
+                            <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
+                            <el-table-column  label="操作" width="120" align="center">
+                                <template scope="scope">
+                                    <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEditRepaymentInfo(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' "  @click="confirmRepayment(scope.$index, scope.row)">确认还款</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
                 </el-tab-pane>
 
                 <el-dialog
@@ -196,22 +200,22 @@
 
                     <el-form :model="repayItem" :rules="rules" ref="repayItem" :label-position="'right'" label-width="120px" inline-message>
                         <el-form-item size="small" label="借款摘要"  prop="name" >
-                            <el-input v-model="repayItem.name" :disabled="true" class="row"></el-input>
+                            <el-input v-model="repayItem.remark" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还日期" prop="name" >
-                            <el-input v-model="repayItem.name" class="row"></el-input>
+                            <el-input v-model="repayItem.returnDate" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还本金" prop="phone" >
-                            <el-input v-model="repayItem.phone" :disabled="true" class="row"></el-input>
+                            <el-input v-model="repayItem.returnPrincipal" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还利息" prop="address" >
-                            <el-input v-model="repayItem.address" class="row"></el-input>
+                            <el-input v-model="repayItem.returnInterest" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="其它费用" prop="iDCardNo" >
-                            <el-input v-model="repayItem.iDCardNo" class="row"></el-input>
+                            <el-input v-model="repayItem.otherCharge" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
-                            <el-input type="textarea" v-model="repayItem.iDCardNo" class="row"></el-input>
+                            <el-input type="textarea" v-model="repayItem.mark" class="row"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer" align='center'>
@@ -221,28 +225,29 @@
                 </el-dialog>
 
                 <el-tab-pane label="保证金列表">
-                    <el-table :data="detail.bailBillList" border max-height="300" :cell-style="{padding:'3px 0'}">
-                        <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
-                            <template scope="scope">
-                                <span v-text="scope.$index+1"></span>
-                            </template>
-                        </el-table-column >
-                        <el-table-column prop="name" label="借款摘要"  align="center" ></el-table-column>
-                        <el-table-column prop="phone" label="借款时间"  align="center" ></el-table-column>
-                        <el-table-column prop="address" label="待退金额"  align="center" ></el-table-column>
-                        <el-table-column prop="iDCardNo" label="已退金额"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="转收入金额" width="120"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="保证金"  align="center" ></el-table-column>
-                        <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
-                        <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
-                        <el-table-column prop="createTime" label="备注"  align="center" ></el-table-column>
-                        <el-table-column  label="操作" align="center" width="120" fixed="right">
-                            <template scope="scope">
-                                <el-button type="text" size="small" @click="handleEditBailInfo(scope.$index, scope.row)">编辑</el-button>
-                                <el-button type="text" size="small" @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <div class="container">
+                        <el-table :data="detail.bailBillList" border height="312" :cell-style="{padding:'3px 0'}">
+                            <el-table-column label="序号" width="50" scope="scope" align="center">
+                                <template scope="scope">
+                                    <span v-text="scope.$index+1"></span>
+                                </template>
+                            </el-table-column >
+                            <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
+                            <el-table-column prop="returnBail" label="待退金额"  align="center" ></el-table-column>
+                            <el-table-column prop="returnedBail" label="已退金额"  align="center" ></el-table-column>
+                            <el-table-column prop="incomeBail" label="转收入金额" width="120"  align="center" ></el-table-column>
+                            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
+                            <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
+                            <el-table-column prop="confirmDate" label="确认时间" width="100" align="center" ></el-table-column>
+                            <el-table-column prop="mark" label="备注" width="200"  align="center" ></el-table-column>
+                            <el-table-column  label="操作" align="center" width="120">
+                                <template scope="scope">
+                                    <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' "   @click="handleEditBailInfo(scope.$index, scope.row)">编辑</el-button>
+                                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 ? '' : 'grey' "   @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
                 </el-tab-pane>
 
                 <el-dialog
@@ -254,25 +259,22 @@
 
                     <el-form :model="bailItem" :rules="rules" ref="bailItem" :label-position="'right'" label-width="120px" inline-message>
                         <el-form-item size="small" label="借款摘要" prop="name" >
-                            <el-input v-model="bailItem.name" :disabled="true" class="row"></el-input>
-                        </el-form-item>
-                        <el-form-item size="small" label="借款时间" prop="phone" >
-                            <el-input v-model="bailItem.phone" class="row"></el-input>
+                            <el-input v-model="bailItem.remark" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="保证金" prop="iDCardNo" >
-                            <el-input v-model="bailItem.iDCardNo" :disabled="true" class="row"></el-input>
+                            <el-input v-model="bailItem.bail" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="待退金额" prop="address" >
-                            <el-input v-model="bailItem.address" class="row"></el-input>
+                            <el-input v-model="bailItem.returnBail" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="已退金额" prop="iDCardNo" >
-                            <el-input v-model="bailItem.iDCardNo" class="row"></el-input>
+                            <el-input v-model="bailItem.returnedBail" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="转收入金额" prop="iDCardNo" >
-                            <el-input v-model="bailItem.iDCardNo" class="row"></el-input>
+                            <el-input v-model="bailItem.incomeBail" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
-                            <el-input v-model="bailItem.iDCardNo" type="textarea" class="row"></el-input>
+                            <el-input v-model="bailItem.mark" type="textarea" class="row"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer" align='center'>
@@ -302,7 +304,9 @@
                 },
                 tableData:[],
                 detail:{
-                    baseInfo:{},
+                    baseInfo:{
+                        company:{}
+                    },
                     returnBillList:[],
                     bailBillList:[]
                 },
@@ -340,7 +344,7 @@
             search(){
                 let self = this;
                 if( this.searchInfo.startDate!='' && this.searchInfo.endDate!= ''
-                    && this.searchInfo.endDate - this.searchInfo.startDate < 0 ){
+                    && new Date(this.searchInfo.endDate) - new Date(this.searchInfo.startDate) < 0 ){
                     this.$message.error('结束时间需大于开始时间');
                     this.searchInfo.startDate = '';
                     this.searchInfo.endDate = '';
@@ -359,19 +363,21 @@
                     }
                 });
             },
-            showDetail(index,row){
+            showDetail(index,row,id){
                 let self = this;
                 resource.loanDetail({
-                    id:row.id
+                    id: id ? id : row.id
                 },function(result){
                     if(result.code==200){
                         self.detail.baseInfo = result.data.bill;
-                        self.detail.baseInfo.customerName = row.customerName;
-                        self.detail.baseInfo.phone = row.phone;
-                        self.detail.baseInfo.company = row.company.name;
+                        self.detail.baseInfo.company = utils.convertDict(result.data.bill.companyId,organizationList);
                         self.detail.returnBillList = result.data.returnBillList;
+                        self.detail.returnBillList.forEach(function (item,index,arr) {
+                            item.returnDate = item.returnDate.substring(0,10);
+                        });
+                        console.log(self.detail.returnBillList);
                         self.detail.bailBillList = result.data.bailBillList;
-                        self.detailDialog = true;
+                        if(!id)self.detailDialog = true;
                     }else{
                         self.$message.error(result.msg);
                     }
@@ -379,17 +385,18 @@
             },
             deleteItem(index, row){
                 let self = this;
-                this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该笔借款, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    resource.customerDel({id:row.id},function(result){
+                    resource.loanDelete({id:row.id},function(result){
                         if(result.code==200){
                             self.$message({
                                 message: result.msg,
                                 type: 'success'
                             });
+                            self.search();
                         }else{
                             self.$message.error(result.msg);
                         }
@@ -407,17 +414,38 @@
             },
             /**还款列表-编辑**/
             handleEditRepaymentInfo(index,row){
-                this.repayInfo = {
-
+                if(row.state==1)return;
+                this.repayItem = {
+                    id:row.id,
+                    billId:row.billId,
+                    remark:row.remark,
+                    returnDate:row.returnDate,
+                    returnPrincipal:row.returnPrincipal,
+                    returnInterest:row.returnInterest,
+                    otherCharge:row.otherCharge,
+                    mark:row.mark
                 };
                 this.repayInfoDialog = true;
             },
             /**还款列表-保存编辑信息**/
             saveRepayInfo(){
-                this.repayInfoDialog = false;
+                var self = this;
+                resource.repaymentUpdate(this.repayItem,function (result) {
+                    if(result.code==200){
+                        self.$message({
+                            message: result.msg,
+                            type: 'success'
+                        });
+                        self.showDetail(null,null,self.repayItem.billId);
+                        self.repayInfoDialog = false;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
             },
             /**还款列表-确认还款**/
             confirmRepayment(index,row){
+                if(row.state==1)return;
                 var self = this;
                 this.$confirm('是否确认还款?', '提示', {
                     confirmButtonText: '确定',
@@ -436,12 +464,36 @@
                 });
             },
             /**保证金列表-编辑**/
-            handleEditBailInfo(){
+            handleEditBailInfo(index,row){
+                //todo
+                // if(row.state==1)return;
+                this.bailItem = {
+                    id:row.id,
+                    billId:row.billId,
+                    remark:row.remark,
+                    bail:row.bail,
+                    returnBail:row.returnBail,
+                    returnedBail:row.returnedBail,
+                    incomeBail:row.incomeBail,
+                    mark:row.mark
+                };
                 this.bailInfoDialog = true;
             },
             /**保证金列表-保存编辑信息**/
             saveBailInfo(){
-                this.bailInfoDialog = false;
+                let self = this;
+                resource.bailUpdate(this.bailItem,function(result){
+                    if(result.code==200){
+                        self.$message({
+                            message: result.msg,
+                            type: 'success'
+                        });
+                        self.showDetail(null,null,self.bailItem.billId);
+                        self.bailInfoDialog = false;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
             },
             /**保证金列表-确认处理**/
             confirmHandle(index, row){
@@ -476,5 +528,8 @@
     }
     .row{
         width: 80%;
+    }
+    .container{
+        height: 300px;
     }
 </style>
