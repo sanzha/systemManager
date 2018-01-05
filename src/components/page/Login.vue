@@ -42,7 +42,7 @@
 
                 resource.login(self.ruleForm,function (result) {
                     if(result.code==200){
-                        localStorage.setItem('ms_username',self.ruleForm.username);
+                        localStorage.setItem('ms_username',result.data.loginUser.name);
                         self.$router.push('/readme');
                     }else{
                         self.$message.error(result.msg);
