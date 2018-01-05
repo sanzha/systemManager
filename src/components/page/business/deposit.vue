@@ -10,17 +10,17 @@
 
         <div class="search">
             <span class="search-label">公司</span>
-            <el-select class="frame" v-model="searchInfo.organizationCode" size="small" placeholder="全部" clearable>
+            <el-select class="frame" v-model="searchInfo.companyId" size="small" placeholder="全部" clearable>
                 <el-option
                     v-for="item in organizationList"
-                    :key="item.code"
-                    :label="item.value"
-                    :value="item.code"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
                 ></el-option>
             </el-select>
             <span class="search-label">姓名</span>
-            <el-input class="input frame" v-model="searchInfo.name" size="small" placeholder="姓名"></el-input>
-            <el-button size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
+            <el-input class="input frame" v-model="searchInfo.customerName" size="small" placeholder="姓名"></el-input>
+            <el-button size="small" class="m-left20" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
         </div>
 
         <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
@@ -29,7 +29,7 @@
                     <span v-text="scope.$index+1"></span>
                 </template>
             </el-table-column >
-            <el-table-column prop="companyId" label="公司" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
             <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机" width="110" align="center" ></el-table-column>
             <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
@@ -42,8 +42,8 @@
             <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
             <el-table-column  label="操作"  align="center" width="120" fixed="right">
                 <template scope="scope">
-                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                    <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -61,19 +61,19 @@
         <el-dialog title="保证金信息" :visible.sync="editItemDialog" center>
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
-                <el-form-item size="small" label="待退金额" prop="returnBail" >
+                <el-form-item size="small" label="待退金额">
                     <el-input v-model="editItem.returnBail" class="row"></el-input>
                 </el-form-item>
 
-                <el-form-item size="small" label="已退金额" prop="returnedBail" >
+                <el-form-item size="small" label="已退金额">
                     <el-input v-model="editItem.returnedBail" class="row"></el-input>
                 </el-form-item>
 
-                <el-form-item size="small" label="转收入金额" prop="incomeBail" >
+                <el-form-item size="small" label="转收入金额">
                     <el-input v-model="editItem.incomeBail" class="row"></el-input>
                 </el-form-item>
 
-                <el-form-item size="small" label="保证金" prop="bail" >
+                <el-form-item size="small" label="保证金">
                     <el-input v-model="editItem.bail" class="row" :disabled="true"></el-input>
                 </el-form-item>
 
@@ -100,12 +100,12 @@
                 searchInfo:{
                     pageNo:1,
                     count:10,
-                    name:'',
-                    organizationCode:''
+                    customerName:'',
+                    companyId:''
                 },
                 tableData:[{}],
                 editItem:{},
-                organizationList:[],
+                organizationList:organizationList,
                 editItemDialog:false,
                 rules:{}
             }
@@ -140,6 +140,10 @@
                 resource.bailList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
+                        self.tableData.forEach(function (item,index,arr) {
+                            item.company = utils.convertDict(item.companyId,organizationList);
+                            item.loanDate = item.loanDate.substring(0,10);
+                        });
                         self.total_count = result.data.total_count;
                     }else{
                         self.$message.error(result.msg);
@@ -147,9 +151,17 @@
                 });
             },
             handleEdit(index, row){
-                this.tmpRow = row;
+                //todo
+                // if(row.state==1)return;
                 this.editItem = {
-                    id:row.id
+                    id:row.id,
+                    billId:row.billId,
+                    remark:row.remark,
+                    bail:row.bail,
+                    returnBail:row.returnBail,
+                    returnedBail:row.returnedBail,
+                    incomeBail:row.incomeBail,
+                    mark:row.mark
                 };
                 this.resetForm('editItem');
                 this.editItemDialog = true;
@@ -158,9 +170,20 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
-
+                        resource.bailUpdate(self.editItem,function(result){
+                            if(result.code==200){
+                                self.$message({
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                                self.editItemDialog = false;
+                                self.search();
+                            }else{
+                                self.$message.error(result.msg);
+                            }
+                        });
                     } else {
-
+                        return false;
                     }
                 });
             },

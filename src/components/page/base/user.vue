@@ -10,16 +10,16 @@
 
         <div class="search">
             <span class="search-label">公司</span>
-            <el-select class="frame" v-model="searchInfo.organizationCode" size="small" placeholder="全部">
+            <el-select class="frame" v-model="searchInfo.companyId" size="small" placeholder="全部">
                 <el-option
                     v-for="item in organizationList"
-                    :key="item.code"
-                    :label="item.value"
-                    :value="item.code"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"
                 ></el-option>
             </el-select>
             <span class="search-label">姓名</span>
-            <el-input class="input frame" v-model="searchInfo.name" size="small" placeholder="姓名"></el-input>
+            <el-input class="input frame" v-model="searchInfo.customerName" size="small" placeholder="姓名"></el-input>
             <el-button class="m-left20" size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
             <el-button class="m-left20" size="small" type="primary" @click="handleAdd">新增</el-button>
         </div>
@@ -60,12 +60,12 @@
             <el-form :model="newItem" :rules="rules" ref="newItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="公司" prop="name" >
-                    <el-select class="row" v-model="newItem.organizationCode" size="small" placeholder="请选择">
+                    <el-select class="row" v-model="newItem.companyId" size="small" placeholder="请选择">
                         <el-option
                             v-for="item in organizationList"
-                            :key="item.code"
-                            :label="item.value"
-                            :value="item.code"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
                         ></el-option>
                     </el-select>
                 </el-form-item>
@@ -113,12 +113,12 @@
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="公司" prop="name" >
-                    <el-select class="row" v-model="editItem.organizationCode" size="small" placeholder="请选择">
+                    <el-select class="row" v-model="editItem.companyId" size="small" placeholder="请选择">
                         <el-option
                             v-for="item in organizationList"
-                            :key="item.code"
-                            :label="item.value"
-                            :value="item.code"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
                         ></el-option>
                     </el-select>
                 </el-form-item>
@@ -174,15 +174,15 @@
                 searchInfo:{
                     pageNo:1,
                     count:10,
-                    name:'',
-                    organizationCode:'',
+                    customerName:'',
+                    companyId:'',
                     DateBegin:'',
                     DateEnd:''
                 },
                 tableData:[{}],
                 newItem:{},
                 editItem:{},
-                organizationList:[],
+                organizationList:organizationList,
                 addItemDialog:false,
                 editItemDialog:false,
                 rules:{}
@@ -190,11 +190,6 @@
         },
         created(){
             this.search();
-        },
-        computed:{
-            sequenceNumber(num){
-                return num == this.tableData.length ? num : '合计';
-            }
         },
         methods:{
             handleSizeChange(val){

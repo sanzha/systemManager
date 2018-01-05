@@ -21,6 +21,9 @@
 .m-top10{
     margin-top: 10px!important;
 }
+.m-bottom10{
+    margin-bottom: 10px!important;
+}
 .m-left20{
     margin-left: 20px!important;
 }
@@ -34,5 +37,8 @@
 .border-bottom-right{
     border-right: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
+}
+.grey{
+    color: lightgrey;
 }
 
