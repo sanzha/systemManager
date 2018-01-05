@@ -17,7 +17,8 @@ axios.interceptors.request.use(
 
 
 // let domain = 'http://gentou.acmefar.com:8088/';
-let domain = 'http://49.4.66.170:80/';
+// let domain = 'http://49.4.66.170:80/';
+let domain = 'http://localhost:8088/';
 
 let postMethods = {
     customerList:domain +'customer/list',   //客户列表

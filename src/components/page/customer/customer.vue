@@ -41,7 +41,7 @@
                 <template scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="text" size="small" @click="deleteItem(scope.$index, scope.row)">删除</el-button>
-                    <el-button type="text" size="small" @click="createBorrow">创建贷款</el-button>
+                    <el-button type="text" size="small" @click="createBorrow(scope.$index, scope.row)">创建贷款</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -168,12 +168,19 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left"  label="公司" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row" :disabled="true"></el-input>
+                            <el-select v-model="borrowInfo.companyId" size="small" class="row" filterable  clearable placeholder="公司">
+                                <el-option
+                                    v-for="item in companies"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right"  label="姓名" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row" :disabled="true"></el-input>
+                            <el-input v-model="borrowInfo.name" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -181,12 +188,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="手机" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row" :disabled="true"></el-input>
+                            <el-input v-model="borrowInfo.phone" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="贷款日期" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.loanDate" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -194,12 +201,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="贷款金额" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.amount" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="期数" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.periods" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -207,12 +214,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="周期(天)" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.period" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="每期应还本金" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row" :disabled="true"></el-input>
+                            <el-input v-model="borrowInfo.eachPrincipal" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -220,12 +227,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="每期应还利息" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.eachInterest" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="保证金" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.bail" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -233,12 +240,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="服务费" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.serviceCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="家访费" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.visitCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -246,20 +253,29 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="诉讼费" prop="" >
-                            <el-input v-model="borrowInfo.name" class="row"></el-input>
+                            <el-input v-model="borrowInfo.lawCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="其他费用" prop="" >
-                            <el-input v-model="borrowInfo.phone" class="row"></el-input>
+                            <el-input v-model="borrowInfo.otherCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
+                
+
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="业务员" prop="" >
-                            <el-input v-model="borrowInfo.salesman" class="row" :disabled="true"></el-input>
+                        <el-form-item size="small" class="label-left" label="业务员">
+                            <el-select v-model="borrowInfo.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                                <el-option
+                                    v-for="item in salesmanDictList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -267,7 +283,7 @@
                 <el-row>
                     <el-col :span="24">
                         <el-form-item size="small" class="label-left" label="备注" prop="" >
-                            <el-input type="textarea" v-model="borrowInfo.phone" style="width: 88%"></el-input>
+                            <el-input type="textarea" v-model="borrowInfo.mark" style="width: 88%"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -473,9 +489,13 @@
                     });
                 });
             },
-            createBorrow(){
+            createBorrow(index, row){
                 this.resetForm('borrowInfo');
-                this.borrowInfo = {};
+                this.borrowInfo = {
+                    name:row.name,
+                    phone:row.phone,
+                    customerId:row.id
+                };
                 this.createBorrowDialog = true;
             },
             saveBorrowInfo(formName){
