@@ -34,7 +34,7 @@
             <el-table-column prop="name" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机" width="120" align="center" ></el-table-column>
             <el-table-column prop="bank" label="开户行"  align="center" ></el-table-column>
-            <el-table-column prop="bankNo" label="银行账号"  align="center" ></el-table-column>
+            <el-table-column prop="bankAccount" label="银行账号"  align="center" ></el-table-column>
             <el-table-column prop="isLeave" label="是否离职"  align="center" ></el-table-column>
             <el-table-column prop="openId" label="openId"  align="center" ></el-table-column>
             <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
@@ -83,7 +83,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="银行账号" prop="name" >
-                    <el-input v-model="newItem.bankNo" class="row"></el-input>
+                    <el-input v-model="newItem.bankAccount" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="是否离职" prop="name" >
@@ -124,7 +124,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="姓名" prop="name" >
-                    <el-input v-model="editItem.phone" class="row"></el-input>
+                    <el-input v-model="editItem.name" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="手机" prop="name" >
@@ -136,7 +136,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="银行账号" prop="name" >
-                    <el-input v-model="editItem.bankNo" class="row"></el-input>
+                    <el-input v-model="editItem.bankAccount" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="是否离职" prop="name" >
@@ -176,8 +176,8 @@
                     count:10,
                     customerName:'',
                     companyId:'',
-                    DateBegin:'',
-                    DateEnd:''
+                    startDate:'',
+                    endDate:''
                 },
                 tableData:[{}],
                 newItem:{},
@@ -194,7 +194,7 @@
         methods:{
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;
@@ -218,6 +218,10 @@
                 resource.userList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
+                        self.tableData.forEach(function(item,index,arr){
+                            item.createTime = item.createTime.substring(0,10);
+
+                        });
                         self.total_count = result.data.total_count;
                     }else{
                         self.$message.error(result.msg);
@@ -233,13 +237,14 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
-                        resource.Method(self.newItem,function(result){
+                        resource.userAdd(self.newItem,function(result){
                             if(result.code==200){
                                 self.$message({
                                     message: result.msg,
                                     type: 'success'
                                 });
                                 self.addItemDialog = false;
+                                self.search();
                             }else{
                                 self.$message.error(result.msg);
                             }
@@ -252,7 +257,15 @@
             handleEdit(index, row){
                 this.tmpRow = row;
                 this.editItem = {
-                    id:row.id
+                    id:row.id,
+                    name:row.name,
+                    phone:row.phone,
+                    password:row.password,
+                    companyId:row.companyId,
+                    bank:row.bank,
+                    bankAccount:row.bankAccount,
+                    openId:row.openId,
+                    mark:row.mark
                 };
                 this.resetForm('editItem');
                 this.editItemDialog = true;
@@ -261,9 +274,20 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
-
+                        resource.userUpdate(self.editItem,function(result){
+                            if(result.code==200){
+                                self.$message({
+                                    message: result.msg,
+                                    type: 'success'
+                                });
+                                self.editItemDialog = false;
+                                self.search();
+                            }else{
+                                self.$message.error(result.msg);
+                            }
+                        });
                     } else {
-
+                        return false;
                     }
                 });
             }

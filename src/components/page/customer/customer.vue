@@ -11,7 +11,7 @@
         <div class="search">
             <el-input class="input" v-model="searchInfo.customerName" size="small" placeholder="姓名" clearable></el-input>
             <span class="search-label m-left20">业务员</span>
-            <el-select v-model="searchInfo.salesmanId" size="small" filterable  clearable placeholder="业务员">
+            <el-select v-model="searchInfo.userId" size="small" filterable  clearable placeholder="业务员">
                 <el-option
                     v-for="item in salesmanDictList"
                     :key="item.id"
@@ -84,7 +84,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="业务员">
-                    <el-select v-model="newItem.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                    <el-select v-model="newItem.userId" size="small" class="row" filterable  clearable placeholder="业务员">
                         <el-option
                             v-for="item in salesmanDictList"
                             :key="item.id"
@@ -94,8 +94,8 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item size="small" label="openId">
-                    <el-input v-model="newItem.openId" class="row"></el-input>
+                <el-form-item size="small" label="openid">
+                    <el-input v-model="newItem.openid" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="备注">
@@ -137,7 +137,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="业务员">
-                    <el-select v-model="editItem.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                    <el-select v-model="editItem.userId" size="small" class="row" filterable  clearable placeholder="业务员">
                         <el-option
                             v-for="item in salesmanDictList"
                             :key="item.id"
@@ -147,8 +147,8 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item size="small" label="openId">
-                    <el-input v-model="editItem.openId" class="row"></el-input>
+                <el-form-item size="small" label="openid">
+                    <el-input v-model="editItem.openid" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="备注">
@@ -192,20 +192,31 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-right" label="贷款日期" prop="" >
-                            <el-input v-model="borrowInfo.loanDate" class="row"></el-input>
+                        <el-form-item size="small" class="label-right" label="贷款日期" prop="loanDate" >
+                            <!--<el-input v-model="borrowInfo.loanDate" class="row"></el-input>-->
+                            <el-date-picker
+                                :editable="false"
+                                value-format="yyyy-MM-dd"
+                                clearable
+                                class="frame"
+                                v-model="borrowInfo.loanDate"
+                                type="date"
+                                size="small"
+                                placeholder="贷款日期"
+                                style="width: 80%">
+                            </el-date-picker>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="贷款金额" prop="" >
+                        <el-form-item size="small" class="label-left" label="贷款金额" prop="amount" >
                             <el-input v-model="borrowInfo.amount" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-right" label="期数" prop="" >
+                        <el-form-item size="small" class="label-right" label="期数" prop="periods" >
                             <el-input v-model="borrowInfo.periods" class="row"></el-input>
                         </el-form-item>
                     </el-col>
@@ -213,20 +224,20 @@
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="周期(天)" prop="" >
+                        <el-form-item size="small" class="label-left" label="周期(天)" prop="period" >
                             <el-input v-model="borrowInfo.period" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-right" label="每期应还本金" prop="" >
-                            <el-input v-model="borrowInfo.eachPrincipal" class="row" :disabled="true"></el-input>
+                        <el-form-item size="small" class="label-right" label="每期应还本金">
+                            <el-input v-model="eachPrincipal" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="每期应还利息" prop="" >
+                        <el-form-item size="small" class="label-left" label="每期应还利息" prop="eachInterest" >
                             <el-input v-model="borrowInfo.eachInterest" class="row"></el-input>
                         </el-form-item>
                     </el-col>
@@ -263,12 +274,12 @@
                     </el-col>
                 </el-row>
 
-                
+
 
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="业务员">
-                            <el-select v-model="borrowInfo.salesmanId" size="small" class="row" filterable  clearable placeholder="业务员">
+                            <el-select v-model="borrowInfo.userId" size="small" class="row" filterable  clearable placeholder="业务员">
                                 <el-option
                                     v-for="item in salesmanDictList"
                                     :key="item.id"
@@ -307,10 +318,11 @@
                     pageNo:1,
                     count:10,
                     customerName:'',
-                    salesmanId:''
+                    userId:''
                 },
                 tableData:[],
                 salesmanList:[],    //业务员列表
+                companies:organizationList,
                 newItem:{},
                 editItem:{},
                 borrowInfo:{},
@@ -324,6 +336,24 @@
                     ],
                     phone:[
                         { validator: utils.regExp.validatePhone, trigger: 'blur' }
+                    ],
+                    period:[
+                        { required: true, message: '请输入周期', trigger: 'blur' }
+                    ],
+                    periods:[
+                        { required: true, message: '请输入期数', trigger: 'blur' }
+                    ],
+                    companyId:[
+                        { required: true, message: '请选择公司', trigger: 'blur' }
+                    ],
+                    loanDate:[
+                        { required: true, message: '请输入贷款日期', trigger: 'blur' }
+                    ],
+                    amount:[
+                        { required: true, message: '请输入贷款金额', trigger: 'blur' }
+                    ],
+                    eachInterest:[
+                        { required: true, message: '请输入每期应还利息', trigger: 'blur' }
                     ]
                 }
             }
@@ -342,12 +372,15 @@
                     result.push(obj);
                 });
                 return result;
+            },
+            eachPrincipal(){
+                return this.borrowInfo.amount && this.borrowInfo.periods ? Number(this.borrowInfo.amount/this.borrowInfo.periods).toFixed(2) : '';
             }
         },
         methods: {
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;
@@ -404,6 +437,7 @@
             handleAdd(){
                 this.resetForm('newItem');
                 this.addItemDialog = true;
+                this.newItem = {};
             },
             saveItem(formName){
                 var self = this;
@@ -436,7 +470,7 @@
                     iDCardNo:row.iDCardNo,
                     bank:row.bank,
                     bankAccount:row.bankAccount,
-                    salesmanId:row.salesman.id,
+                    userId:row.salesman.id,
                     openid:row.openid,
                     mark:row.mark
                 };
@@ -494,15 +528,17 @@
                 this.borrowInfo = {
                     name:row.name,
                     phone:row.phone,
-                    customerId:row.id
+                    customerId:row.id,
+                    period:7
                 };
                 this.createBorrowDialog = true;
             },
             saveBorrowInfo(formName){
                 var self = this;
+                this.borrowInfo.eachPrincipal = this.eachPrincipal;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
-                        resource.customerAdd(self.borrowInfo,function(result){
+                        resource.loanAdd(self.borrowInfo,function(result){
                             if(result.code==200){
                                 self.$message({
                                     message: result.msg,

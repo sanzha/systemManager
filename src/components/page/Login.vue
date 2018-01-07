@@ -12,7 +12,6 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                 </div>
-                <p style="font-size:12px;line-height:30px;color:#999;">Tips : 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
@@ -42,7 +41,8 @@
 
                 resource.login(self.ruleForm,function (result) {
                     if(result.code==200){
-                        localStorage.setItem('ms_username',self.ruleForm.username);
+                        localStorage.setItem('ms_username',result.data.loginUser.name);
+                        window.companies = result.data.companies;
                         self.$router.push('/readme');
                     }else{
                         self.$message.error(result.msg);

@@ -116,7 +116,7 @@
         methods:{
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;

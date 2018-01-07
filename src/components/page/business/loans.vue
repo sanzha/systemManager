@@ -9,40 +9,55 @@
             </el-breadcrumb>
         </div>
         <div class="search">
-            <span class="search-label">贷款时间</span>
-            <el-date-picker
-                :editable="false"
-                value-format="yyyy-MM-dd"
-                clearable
-                class="frame"
-                v-model="searchInfo.startDate"
-                type="date"
-                size="small"
-                placeholder="开始时间">
-            </el-date-picker>
-            <span>-</span>
-            <el-date-picker
-                :editable="false"
-                value-format="yyyy-MM-dd"
-                clearable
-                class="frame"
-                v-model="searchInfo.endDate"
-                type="date"
-                size="small"
-                placeholder="结束时间">
-            </el-date-picker>
-            <span class="search-label">公司</span>
-            <el-select v-model="searchInfo.companyId" class="frame" size="small" placeholder="全部" clearable>
-                <el-option
-                    v-for="item in organizationList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                ></el-option>
-            </el-select>
-            <span class="search-label">姓名</span>
-            <el-input class="input frame" v-model="searchInfo.customerName" size="small" placeholder="姓名" clearable></el-input>
-            <el-button size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
+            <div>
+                <span class="search-label">公司</span>
+                <el-select v-model="searchInfo.companyId" class="w180" size="small" placeholder="全部" clearable>
+                    <el-option
+                        v-for="item in organizationList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id"
+                    ></el-option>
+                </el-select>
+                <span class="search-label">贷款时间</span>
+                <el-date-picker
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    clearable
+                    class="frame"
+                    v-model="searchInfo.startDate"
+                    type="date"
+                    size="small"
+                    placeholder="开始时间">
+                </el-date-picker>
+                <span>-</span>
+                <el-date-picker
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    clearable
+                    class="frame"
+                    v-model="searchInfo.endDate"
+                    type="date"
+                    size="small"
+                    placeholder="结束时间">
+                </el-date-picker>
+            </div>
+
+            <div class="m-top10">
+                <span class="search-label">姓名</span>
+                <el-input class="w180" v-model="searchInfo.customerName" size="small" placeholder="姓名" clearable></el-input>
+                <span class="search-label m-left44">业务员</span>
+                <el-select v-model="searchInfo.userId" size="small" class="w180" filterable  clearable placeholder="业务员">
+                    <el-option
+                        v-for="item in salesmanDictList"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-button size="small" class="m-left20" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
+            </div>
+
         </div>
 
         <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
@@ -67,7 +82,7 @@
             <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
             <el-table-column prop="returnedPrincipal" label="已还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnedInterest" label="已还利息"  align="center" ></el-table-column>
-            <el-table-column prop="salesman" label="业务员"  align="center" ></el-table-column>
+            <el-table-column prop="salesman.name" label="业务员" width="160"  align="center" ></el-table-column>
             <el-table-column  label="操作"  align="center" width="100" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="showDetail(scope.$index, scope.row)">查看</el-button>
@@ -154,7 +169,7 @@
                             </el-col>
                             <el-col :span="6" class="border-bottom-right cell">
                                 <span>业务员:</span>
-                                <span v-text="detail.baseInfo.userId"></span>
+                                <span v-text="detail.baseInfo.salesman.name"></span>
                             </el-col>
                             <el-col :span="24" class="border-bottom-right cell">
                                 <span>备注:</span>
@@ -165,7 +180,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="还款列表">
                     <div class="container">
-                        <el-button class="m-bottom10" size="small" type="primary"  @click="batchRrepayment">提前还款</el-button>
+                        <el-button class="m-bottom10" size="small" type="primary"  @click="handleBatchRrepay">提前还款</el-button>
                         <el-table :data="detail.returnBillList" border height="270" :cell-style="{padding:'3px 0'}">
                             <el-table-column label="序号" width="50" scope="scope" align="center">
                                 <template scope="scope">
@@ -177,9 +192,9 @@
                             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
                             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
                             <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
-                            <el-table-column prop="" label="合计"  align="center" ></el-table-column>
-                            <el-table-column prop="confirmDate" label="确认时间"  align="center" ></el-table-column>
-                            <el-table-column prop="state" label="状态"  align="center" ></el-table-column>
+                            <el-table-column prop="totalCharge" label="合计"  align="center" ></el-table-column>
+                            <el-table-column prop="sureTime" label="确认时间" width="100"  align="center" ></el-table-column>
+                            <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
                             <el-table-column prop="mark" width="200" label="备注"  align="center" ></el-table-column>
                             <el-table-column  label="操作" width="120" align="center">
                                 <template scope="scope">
@@ -203,7 +218,7 @@
                             <el-input v-model="repayItem.remark" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还日期" prop="name" >
-                            <el-input v-model="repayItem.returnDate" class="row"></el-input>
+                            <el-input v-model="repayItem.returnDate" class="row" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还本金" prop="phone" >
                             <el-input v-model="repayItem.returnPrincipal" :disabled="true" class="row"></el-input>
@@ -221,6 +236,39 @@
                     <div slot="footer" class="dialog-footer" align='center'>
                         <el-button size="small" type="primary" @click="saveRepayInfo('repayItem')">确 定</el-button>
                         <el-button size="small" @click="repayInfoDialog = false">取 消</el-button>
+                    </div>
+                </el-dialog>
+
+                <el-dialog
+                    center
+                    width="40%"
+                    title="提前还款信息"
+                    :visible.sync="batchRepaymentInfoDialog"
+                    append-to-body>
+
+                    <el-form :model="batchRepaymentInfo" :rules="rules" ref="batchRepaymentInfo" :label-position="'right'" label-width="120px" inline-message>
+                        <el-form-item size="small" label="借款摘要"  prop="name" >
+                            <el-input v-model="batchRepaymentInfo.remark" :disabled="true" class="row"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" label="应还日期" prop="name" >
+                            <el-input v-model="batchRepaymentInfo.returnDate" :disabled="true" class="row"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" label="应还本金" prop="phone" >
+                            <el-input v-model="batchRepaymentInfo.returnPrincipal" :disabled="true" class="row"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" label="应还利息" prop="address" >
+                            <el-input v-model="batchRepaymentInfo.returnInterest" class="row"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" label="其它费用" prop="iDCardNo" >
+                            <el-input v-model="batchRepaymentInfo.otherCharge" class="row"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" label="备注" prop="iDCardNo" >
+                            <el-input type="textarea" v-model="repayItem.mark" class="row"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer" align='center'>
+                        <el-button size="small" type="primary" @click="batchRrepay('repayItem')">确 定</el-button>
+                        <el-button size="small" @click="batchRepaymentInfoDialog = false">取 消</el-button>
                     </div>
                 </el-dialog>
 
@@ -300,21 +348,26 @@
                     startDate:'',
                     endDate:'',
                     companyId:'',
-                    customerName:''
+                    customerName:'',
+                    userId:''
                 },
                 tableData:[],
+                salesmanList:[],
                 detail:{
                     baseInfo:{
-                        company:{}
+                        company:{},
+                        salesman:{}
                     },
                     returnBillList:[],
                     bailBillList:[]
                 },
                 repayItem:{},   //还款信息
                 bailItem:{},    //保证金信息
+                batchRepaymentInfo:{},    //提前还款信息
                 repayInfoDialog:false,
                 bailInfoDialog:false,
                 detailDialog:false,
+                batchRepaymentInfoDialog:false,
                 rules:{
 
                 },
@@ -322,12 +375,25 @@
             }
         },
         created(){
-            this.search();
+            this.getDict();
+        },
+        computed:{
+            salesmanDictList(){
+                let result = [];
+                this.salesmanList.forEach(function (item,index,arr) {
+                    let obj = {
+                        id:item.id,
+                        name:item.name + "(" + item.phone + ")"
+                    };
+                    result.push(obj);
+                });
+                return result;
+            }
         },
         methods:{
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;
@@ -340,6 +406,26 @@
                 }else{
                     this.pageNo = 1;
                 }
+            },
+            getDict(){
+                var self = this;
+                const p1 = new Promise(function(resolve, reject) {
+                    resource.userList({
+
+                    },function(result){
+                        if(result.code==200){
+                            resolve(result);
+                        }else{
+                            reject(result);
+                        }
+                    });
+                });
+                p1.then(function(json) {
+                    self.salesmanList = json.data;
+                    self.search();
+                }, function(json) {
+                    self.$message.error(json.msg);
+                });
             },
             search(){
                 let self = this;
@@ -354,6 +440,7 @@
                     if(result.code==200){
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
+                           item.salesman = utils.convertDict(item.userId,self.salesmanDictList);
                            item.company = utils.convertDict(item.companyId,organizationList);
                            item.loanDate = item.loanDate.substring(0,10);
                         });
@@ -370,12 +457,14 @@
                 },function(result){
                     if(result.code==200){
                         self.detail.baseInfo = result.data.bill;
+                        self.detail.baseInfo.salesman = utils.convertDict(result.data.bill.userId,self.salesmanList);
                         self.detail.baseInfo.company = utils.convertDict(result.data.bill.companyId,organizationList);
                         self.detail.returnBillList = result.data.returnBillList;
                         self.detail.returnBillList.forEach(function (item,index,arr) {
                             item.returnDate = item.returnDate.substring(0,10);
+                            item.sureTime = item.sureTime ? item.sureTime.substring(0,10) : '';
+                            item.stateLabel = item.state == 1 ? '已还款' : '未还款';
                         });
-                        console.log(self.detail.returnBillList);
                         self.detail.bailBillList = result.data.bailBillList;
                         if(!id)self.detailDialog = true;
                     }else{
@@ -408,9 +497,42 @@
                     });
                 });
             },
+            handleBatchRrepay(){
+                let self = this;
+                resource.getBatchRepaymentInfo({
+                    billId:this.detail.baseInfo.id
+                },function(result){
+                    if(result.code==200){
+                        self.batchRepaymentInfo = {
+                            billId:result.data.billId,
+                            remark:result.data.remark,
+                            returnDate:result.data.returnDate.substring(0,10),
+                            returnPrincipal:result.data.returnPrincipal,
+                            returnInterest:result.data.returnInterest,
+                            otherCharge:result.data.otherCharge,
+                            mark:''
+                        };
+                        self.batchRepaymentInfoDialog = true;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
+            },
             /**还款列表-提前还款**/
-            batchRrepayment(){
-
+            batchRrepay(){
+                var self = this;
+                resource.repaymentBatchConfirm(this.batchRepaymentInfo,function (result) {
+                    if(result.code==200){
+                        self.$message({
+                            message: result.msg,
+                            type: 'success'
+                        });
+                        self.showDetail(null,null,self.detail.baseInfo.id);
+                        self.batchRepaymentInfoDialog = false;
+                    }else{
+                        self.$message.error(result.msg);
+                    }
+                });
             },
             /**还款列表-编辑**/
             handleEditRepaymentInfo(index,row){
@@ -446,15 +568,26 @@
             /**还款列表-确认还款**/
             confirmRepayment(index,row){
                 if(row.state==1)return;
-                var self = this;
+                let self = this;
+                let billId = row.billId;
                 this.$confirm('是否确认还款?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    self.$message({
-                        message: '还款成功',
-                        type: 'success'
+                    let self = this;
+                    resource.repaymentConfirm({
+                        id:row.id
+                    },function(result){
+                        if(result.code==200){
+                            self.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                            self.showDetail(null,null,billId);
+                        }else{
+                            self.$message.error(result.msg);
+                        }
                     });
                 }).catch(() => {
                     self.$message({
@@ -465,8 +598,7 @@
             },
             /**保证金列表-编辑**/
             handleEditBailInfo(index,row){
-                //todo
-                // if(row.state==1)return;
+                if(row.state==1)return;
                 this.bailItem = {
                     id:row.id,
                     billId:row.billId,
@@ -497,15 +629,24 @@
             },
             /**保证金列表-确认处理**/
             confirmHandle(index, row){
-                var self = this;
+                let self = this;
                 this.$confirm('是否完成保证金处理?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    self.$message({
-                        message: '已完成保证金处理',
-                        type: 'success'
+                    resource.bailHandle({
+                        id:row.id
+                    },function(result){
+                        if(result.code==200){
+                            self.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                            self.showDetail(null,null,self.detail.baseInfo.id);
+                        }else{
+                            self.$message.error(result.msg);
+                        }
                     });
                 }).catch(() => {
                     self.$message({
@@ -531,5 +672,11 @@
     }
     .container{
         height: 300px;
+    }
+    .w180{
+        width: 180px;
+    }
+    .m-left44{
+        margin-left: 44px;
     }
 </style>

@@ -70,15 +70,18 @@
                     <span v-text="scope.$index+1"></span>
                 </template>
             </el-table-column >
+            <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="customerName" label="姓名" width="80"  align="center" ></el-table-column>
+            <el-table-column prop="phone" label="手机" width="150"  align="center" ></el-table-column>
             <el-table-column prop="remark" label="借款摘要" width="280"  align="center" ></el-table-column>
             <el-table-column prop="returnDate" label="应还日期" width="100"  align="center" ></el-table-column>
             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
             <el-table-column prop="otherCharge" label="其它费用" width="150" align="center" ></el-table-column>
-            <el-table-column prop="" label="合计" width="150"  align="center" ></el-table-column>
+            <el-table-column prop="totalCharge" label="合计" width="150"  align="center" ></el-table-column>
             <el-table-column prop="mark" label="备注" width="220"  align="center" ></el-table-column>
             <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
-            <el-table-column prop="confirmRepayDate" label="确认时间" width="100"  align="center" ></el-table-column>
+            <el-table-column prop="sureTime" label="确认时间" width="100"  align="center" ></el-table-column>
             <el-table-column  label="操作" width="120" align="center" fixed="right">
                 <template scope="scope">
                     <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -102,7 +105,7 @@
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="应还日期" prop="name" >
-                    <el-input v-model="editItem.returnDate" class="row"></el-input>
+                    <el-input v-model="editItem.returnDate" class="row" disabled></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="应还本金"  prop="phone" >
@@ -167,7 +170,7 @@
         methods:{
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;
@@ -202,7 +205,9 @@
                     if(result.code==200){
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
+                            item.company = utils.convertDict(item.companyId,organizationList);
                             item.returnDate = item.returnDate.substring(0,10);
+                            item.sureTime = item.sureTime ? item.sureTime.substring(0,10) : '';
                             item.stateLabel = item.state == 1 ? '已还款' : '未还款';
                         });
                         self.total_count = result.data.total_count;
@@ -248,21 +253,20 @@
                 });
             },
             confirmRepayment(index,row){
-                var self = this;
-                this.$confirm('是否确认还款?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    self.$message({
-                        message: '还款成功',
-                        type: 'success'
-                    });
-                }).catch(() => {
-                    self.$message({
-                        type: 'info',
-                        message: '已取消还款'
-                    });
+                if(row.state==1)return;
+                let self = this;
+                resource.repaymentConfirm({
+                    id:row.id
+                },function(result){
+                    if(result.code==200){
+                        self.$message({
+                            message: result.msg,
+                            type: 'success'
+                        });
+                        self.search();
+                    }else{
+                        self.$message.error(result.msg);
+                    }
                 });
             }
         }
