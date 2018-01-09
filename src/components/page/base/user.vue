@@ -175,9 +175,7 @@
                     pageNo:1,
                     count:10,
                     customerName:'',
-                    companyId:'',
-                    startDate:'',
-                    endDate:''
+                    companyId:''
                 },
                 tableData:[{}],
                 newItem:{},
