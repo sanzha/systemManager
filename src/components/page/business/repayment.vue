@@ -77,7 +77,7 @@
             <el-table-column prop="returnDate" label="应还日期" width="100"  align="center" ></el-table-column>
             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
-            <el-table-column prop="otherCharge" label="其它费用" width="150" align="center" ></el-table-column>
+            <el-table-column prop="otherCharge" label="其它应还费用" width="150" align="center" ></el-table-column>
             <el-table-column prop="totalCharge" label="合计" width="150"  align="center" ></el-table-column>
             <el-table-column prop="mark" label="备注" width="220"  align="center" ></el-table-column>
             <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>

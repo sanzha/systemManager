@@ -191,7 +191,7 @@
                             <el-table-column prop="returnDate" label="应还日期" width="100" align="center" ></el-table-column>
                             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
                             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
-                            <el-table-column prop="otherCharge" label="其它费用"  align="center" ></el-table-column>
+                            <el-table-column prop="otherCharge" label="其它应还费用"  align="center" ></el-table-column>
                             <el-table-column prop="totalCharge" label="合计"  align="center" ></el-table-column>
                             <el-table-column prop="sureTime" label="确认时间" width="100"  align="center" ></el-table-column>
                             <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
@@ -226,7 +226,7 @@
                         <el-form-item size="small" label="应还利息" prop="address" >
                             <el-input v-model="repayItem.returnInterest" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="其它费用" prop="iDCardNo" >
+                        <el-form-item size="small" label="其它应还费用" prop="iDCardNo" >
                             <el-input v-model="repayItem.otherCharge" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
@@ -259,7 +259,7 @@
                         <el-form-item size="small" label="应还利息" prop="address" >
                             <el-input v-model="batchRepaymentInfo.returnInterest" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="其它费用" prop="iDCardNo" >
+                        <el-form-item size="small" label="其它应还费用" prop="iDCardNo" >
                             <el-input v-model="batchRepaymentInfo.otherCharge" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
@@ -286,7 +286,7 @@
                             <el-table-column prop="incomeBail" label="转收入金额" width="120"  align="center" ></el-table-column>
                             <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
                             <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
-                            <el-table-column prop="confirmDate" label="确认时间" width="100" align="center" ></el-table-column>
+                            <el-table-column prop="sureTime" label="确认时间" width="100" align="center" ></el-table-column>
                             <el-table-column prop="mark" label="备注" width="200"  align="center" ></el-table-column>
                             <el-table-column  label="操作" align="center" width="120">
                                 <template scope="scope">

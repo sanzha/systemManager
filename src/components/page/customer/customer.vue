@@ -279,7 +279,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="业务员">
-                            <el-select v-model="borrowInfo.userId" size="small" class="row" filterable  clearable placeholder="业务员">
+                            <el-select v-model="borrowInfo.userId" size="small" class="row" filterable :disabled="true"  clearable placeholder="业务员">
                                 <el-option
                                     v-for="item in salesmanDictList"
                                     :key="item.id"
@@ -529,6 +529,7 @@
                     name:row.name,
                     phone:row.phone,
                     customerId:row.id,
+                    userId:row.salesman.id,
                     period:7
                 };
                 this.createBorrowDialog = true;
@@ -545,6 +546,7 @@
                                     type: 'success'
                                 });
                                 self.createBorrowDialog = false;
+                                self.$router.push('/business/loans');
                             }else{
                                 self.$message.error(result.msg);
                             }

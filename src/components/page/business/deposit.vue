@@ -151,8 +151,7 @@
                 });
             },
             handleEdit(index, row){
-                //todo
-                // if(row.state==1)return;
+                if(row.state==1)return;
                 this.editItem = {
                     id:row.id,
                     billId:row.billId,
@@ -188,6 +187,7 @@
                 });
             },
             confirmHandle(index, row){
+                if(row.returnBail != 0)return;
                 var self = this;
                 this.$confirm('是否完成保证金处理?', '提示', {
                     confirmButtonText: '确定',
