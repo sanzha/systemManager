@@ -60,7 +60,12 @@
 
         </div>
 
-        <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
+        <el-table :data="tableData"
+                  :summary-method="getSummaries"
+                  show-summary
+                  border
+                  max-height="500"
+                  :cell-style="{padding:'3px 0'}">
             <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
                 <template scope="scope">
                     <span v-text="scope.$index+1"></span>
@@ -96,7 +101,7 @@
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="pageNo"
-                       :page-sizes="[10, 20, 50]"
+                       :page-sizes="[50, 100, 200, 500, 1000]"
                        :page-size="searchInfo.count"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="total_count">
@@ -181,7 +186,11 @@
                 <el-tab-pane label="还款列表">
                     <div class="container">
                         <el-button class="m-bottom10" size="small" type="primary"  @click="handleBatchRrepay">提前还款</el-button>
-                        <el-table :data="detail.returnBillList" border height="270" :cell-style="{padding:'3px 0'}">
+                        <el-table :data="detail.returnBillList"
+                                  :summary-method="getRepaySummaries"
+                                  show-summary
+                                  border height="270"
+                                  :cell-style="{padding:'3px 0'}">
                             <el-table-column label="序号" width="50" scope="scope" align="center">
                                 <template scope="scope">
                                     <span v-text="scope.$index+1"></span>
@@ -191,7 +200,7 @@
                             <el-table-column prop="returnDate" label="应还日期" width="100" align="center" ></el-table-column>
                             <el-table-column prop="returnPrincipal" label="应还本金"  align="center" ></el-table-column>
                             <el-table-column prop="returnInterest" label="应还利息"  align="center" ></el-table-column>
-                            <el-table-column prop="otherCharge" label="其它应还费用"  align="center" ></el-table-column>
+                            <el-table-column prop="otherCharge" label="其它应还费用" width="120"  align="center" ></el-table-column>
                             <el-table-column prop="totalCharge" label="合计"  align="center" ></el-table-column>
                             <el-table-column prop="sureTime" label="确认时间" width="100"  align="center" ></el-table-column>
                             <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
@@ -226,7 +235,7 @@
                         <el-form-item size="small" label="应还利息" prop="address" >
                             <el-input v-model="repayItem.returnInterest" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="其它应还费用" prop="iDCardNo" >
+                        <el-form-item size="small" label="其它应还费用"  prop="iDCardNo" >
                             <el-input v-model="repayItem.otherCharge" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
@@ -274,24 +283,28 @@
 
                 <el-tab-pane label="保证金列表">
                     <div class="container">
-                        <el-table :data="detail.bailBillList" border height="312" :cell-style="{padding:'3px 0'}">
+                        <el-table :data="detail.bailBillList"
+                                  :summary-method="getBailSummaries"
+                                  show-summary
+                                  border height="312"
+                                  :cell-style="{padding:'3px 0'}">
                             <el-table-column label="序号" width="50" scope="scope" align="center">
                                 <template scope="scope">
                                     <span v-text="scope.$index+1"></span>
                                 </template>
                             </el-table-column >
                             <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
+                            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
                             <el-table-column prop="returnBail" label="待退金额"  align="center" ></el-table-column>
                             <el-table-column prop="returnedBail" label="已退金额"  align="center" ></el-table-column>
                             <el-table-column prop="incomeBail" label="转收入金额" width="120"  align="center" ></el-table-column>
-                            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
-                            <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
+                            <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
                             <el-table-column prop="sureTime" label="确认时间" width="100" align="center" ></el-table-column>
                             <el-table-column prop="mark" label="备注" width="200"  align="center" ></el-table-column>
                             <el-table-column  label="操作" align="center" width="120">
                                 <template scope="scope">
                                     <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' "   @click="handleEditBailInfo(scope.$index, scope.row)">编辑</el-button>
-                                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 ? '' : 'grey' "   @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 && scope.row.state == 0 ? '' : 'grey' "   @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -306,22 +319,22 @@
                     append-to-body>
 
                     <el-form :model="bailItem" :rules="rules" ref="bailItem" :label-position="'right'" label-width="120px" inline-message>
-                        <el-form-item size="small" label="借款摘要" prop="name" >
+                        <el-form-item size="small" label="借款摘要" >
                             <el-input v-model="bailItem.remark" :disabled="true" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="保证金" prop="iDCardNo" >
-                            <el-input v-model="bailItem.bail" :disabled="true" class="row"></el-input>
+                        <el-form-item size="small" label="保证金" >
+                            <el-input :value="bailItem.bail" :disabled="true" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="待退金额" prop="address" >
-                            <el-input v-model="bailItem.returnBail" class="row"></el-input>
+                        <el-form-item size="small" label="待退金额" >
+                            <el-input :value="returnBail" class="row" :disabled="true"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="已退金额" prop="iDCardNo" >
-                            <el-input v-model="bailItem.returnedBail" class="row"></el-input>
+                        <el-form-item size="small" label="已退金额" >
+                            <el-input type="number" v-model="bailItem.returnedBail" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="转收入金额" prop="iDCardNo" >
-                            <el-input v-model="bailItem.incomeBail" class="row"></el-input>
+                        <el-form-item size="small" label="转收入金额" >
+                            <el-input type="number" v-model="bailItem.incomeBail" class="row"></el-input>
                         </el-form-item>
-                        <el-form-item size="small" label="备注" prop="iDCardNo" >
+                        <el-form-item size="small" label="备注" >
                             <el-input v-model="bailItem.mark" type="textarea" class="row"></el-input>
                         </el-form-item>
                     </el-form>
@@ -344,7 +357,7 @@
                 total_count:50,
                 searchInfo:{
                     pageNo:1,
-                    count:10,
+                    count:50,
                     startDate:'',
                     endDate:'',
                     companyId:'',
@@ -371,7 +384,7 @@
                 rules:{
 
                 },
-                organizationList:organizationList
+                organizationList:utils.lsp.get('organizationList')
             }
         },
         created(){
@@ -388,6 +401,11 @@
                     result.push(obj);
                 });
                 return result;
+            },
+            returnBail(){
+                let returnedBail = this.bailItem.returnedBail ? this.bailItem.returnedBail : 0,
+                    incomeBail = this.bailItem.incomeBail ? this.bailItem.incomeBail : 0;
+                return this.bailItem.bail - returnedBail - incomeBail;
             }
         },
         methods:{
@@ -427,6 +445,46 @@
                     self.$message.error(json.msg);
                 });
             },
+            summation(columns,data,arr){
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    if(arr.indexOf(index)>=0){
+                        sums[index] = '';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += ' 元';
+                    } else {
+                        sums[index] = '';
+                    }
+                });
+                return sums;
+            },
+            getSummaries(param) {
+                const { columns, data } = param;
+                return this.summation(columns, data, [3,5,6,8,9]);
+            },
+            getRepaySummaries(param) {
+                const { columns, data } = param;
+                return this.summation(columns, data, [7]);
+            },
+            getBailSummaries(param) {
+                const { columns, data } = param;
+                return this.summation(columns, data, []);
+            },
             search(){
                 let self = this;
                 if( this.searchInfo.startDate!='' && this.searchInfo.endDate!= ''
@@ -441,7 +499,7 @@
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
                            item.salesman = utils.convertDict(item.userId,self.salesmanDictList);
-                           item.company = utils.convertDict(item.companyId,organizationList);
+                           item.company = utils.convertDict(item.companyId,self.organizationList);
                            item.loanDate = item.loanDate.substring(0,10);
                         });
                         self.total_count = result.data.total_count;
@@ -458,7 +516,7 @@
                     if(result.code==200){
                         self.detail.baseInfo = result.data.bill;
                         self.detail.baseInfo.salesman = utils.convertDict(result.data.bill.userId,self.salesmanList);
-                        self.detail.baseInfo.company = utils.convertDict(result.data.bill.companyId,organizationList);
+                        self.detail.baseInfo.company = utils.convertDict(result.data.bill.companyId,self.organizationList);
                         self.detail.returnBillList = result.data.returnBillList;
                         self.detail.returnBillList.forEach(function (item,index,arr) {
                             item.returnDate = item.returnDate.substring(0,10);
@@ -466,6 +524,10 @@
                             item.stateLabel = item.state == 1 ? '已还款' : '未还款';
                         });
                         self.detail.bailBillList = result.data.bailBillList;
+                        self.detail.bailBillList.forEach(function (item,index,arr) {
+                            item.stateLabel = item.state?'已确认':'未确认';
+                            item.sureTime = item.sureTime?item.sureTime.substring(0,10):'';
+                        });
                         if(!id)self.detailDialog = true;
                     }else{
                         self.$message.error(result.msg);
@@ -614,6 +676,7 @@
             /**保证金列表-保存编辑信息**/
             saveBailInfo(){
                 let self = this;
+                this.bailItem.returnBail = this.returnBail;
                 resource.bailUpdate(this.bailItem,function(result){
                     if(result.code==200){
                         self.$message({
@@ -629,6 +692,7 @@
             },
             /**保证金列表-确认处理**/
             confirmHandle(index, row){
+                if(row.returnBail != 0 || row.state != 0)return;
                 let self = this;
                 this.$confirm('是否完成保证金处理?', '提示', {
                     confirmButtonText: '确定',

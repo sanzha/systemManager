@@ -42,7 +42,7 @@
                 resource.login(self.ruleForm,function (result) {
                     if(result.code==200){
                         localStorage.setItem('ms_username',result.data.loginUser.name);
-                        window.companies = result.data.companies;
+                        utils.lsp.add('organizationList',result.data.companies);
                         self.$router.push('/readme');
                     }else{
                         self.$message.error(result.msg);

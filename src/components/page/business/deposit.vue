@@ -23,7 +23,12 @@
             <el-button size="small" class="m-left20" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
         </div>
 
-        <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
+        <el-table :data="tableData"
+                  :summary-method="getSummaries"
+                  show-summary
+                  border
+                  max-height="500"
+                  :cell-style="{padding:'3px 0'}">
             <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
                 <template scope="scope">
                     <span v-text="scope.$index+1"></span>
@@ -33,17 +38,17 @@
             <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机" width="110" align="center" ></el-table-column>
             <el-table-column prop="remark" label="借款摘要" width="220" align="center" ></el-table-column>
+            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
             <el-table-column prop="returnBail" label="待退金额"  align="center" ></el-table-column>
             <el-table-column prop="returnedBail" label="已退金额"  align="center" ></el-table-column>
             <el-table-column prop="incomeBail" label="转收入金额" width="120" align="center" ></el-table-column>
-            <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
-            <el-table-column prop="status" label="状态"  align="center" ></el-table-column>
-            <el-table-column prop="confirmDate" width="100" label="确认时间"  align="center" ></el-table-column>
-            <el-table-column prop="mark" label="备注"  align="center" ></el-table-column>
+            <el-table-column prop="mark" label="备注" width="220" align="center" ></el-table-column>
+            <el-table-column prop="stateLabel" label="状态"  align="center" ></el-table-column>
+            <el-table-column prop="sureTime" width="100" label="确认时间"  align="center" ></el-table-column>
             <el-table-column  label="操作"  align="center" width="120" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -52,7 +57,7 @@
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="pageNo"
-                       :page-sizes="[10, 20, 50]"
+                       :page-sizes="[50, 100, 200, 500, 1000]"
                        :page-size="searchInfo.count"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="total_count">
@@ -61,20 +66,20 @@
         <el-dialog title="保证金信息" :visible.sync="editItemDialog" center>
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
+                <el-form-item size="small" label="保证金">
+                    <el-input :value="editItem.bail" class="row" :disabled="true"></el-input>
+                </el-form-item>
+
                 <el-form-item size="small" label="待退金额">
-                    <el-input v-model="editItem.returnBail" class="row"></el-input>
+                    <el-input :value="returnBail" class="row" :disabled="true"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="已退金额">
-                    <el-input v-model="editItem.returnedBail" class="row"></el-input>
+                    <el-input type="number" v-model="editItem.returnedBail" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="转收入金额">
-                    <el-input v-model="editItem.incomeBail" class="row"></el-input>
-                </el-form-item>
-
-                <el-form-item size="small" label="保证金">
-                    <el-input v-model="editItem.bail" class="row" :disabled="true"></el-input>
+                    <el-input type="number" v-model="editItem.incomeBail" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="备注">
@@ -99,19 +104,26 @@
                 total_count:null,
                 searchInfo:{
                     pageNo:1,
-                    count:10,
+                    count:50,
                     customerName:'',
                     companyId:''
                 },
                 tableData:[{}],
                 editItem:{},
-                organizationList:organizationList,
+                organizationList:utils.lsp.get('organizationList'),
                 editItemDialog:false,
                 rules:{}
             }
         },
         created(){
             this.search();
+        },
+        computed:{
+            returnBail(){
+                let returnedBail = this.editItem.returnedBail ? this.editItem.returnedBail : 0,
+                    incomeBail = this.editItem.incomeBail ? this.editItem.incomeBail : 0;
+                return this.editItem.bail - returnedBail - incomeBail;
+            }
         },
         methods:{
             handleSizeChange(val){
@@ -135,14 +147,46 @@
                     this.pageNo = 1;
                 }
             },
+            getSummaries(param) {
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    if([3,9].indexOf(index)>=0){
+                        sums[index] = '';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += ' 元';
+                    } else {
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
+            },
             search(){
                 let self = this;
                 resource.bailList(this.searchInfo,function(result){
                     if(result.code==200){
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
-                            item.company = utils.convertDict(item.companyId,organizationList);
-                            item.loanDate = item.loanDate.substring(0,10);
+                            item.company = utils.convertDict(item.companyId,self.organizationList);
+                            item.loanDate = item.loanDate?item.loanDate.substring(0,10):'';
+                            item.stateLabel = item.state?'已确认':'未确认';
+                            item.sureTime = item.sureTime?item.sureTime.substring(0,10):'';
                         });
                         self.total_count = result.data.total_count;
                     }else{
@@ -167,6 +211,7 @@
             },
             updateItem(formName){
                 let self = this;
+                this.editItem.returnBail = this.returnBail;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
                         resource.bailUpdate(self.editItem,function(result){
@@ -187,16 +232,25 @@
                 });
             },
             confirmHandle(index, row){
-                if(row.returnBail != 0)return;
+                if(row.returnBail != 0 || row.state != 0)return;
                 var self = this;
                 this.$confirm('是否完成保证金处理?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    self.$message({
-                        message: '已完成保证金处理',
-                        type: 'success'
+                    resource.bailHandle({
+                        id:row.id
+                    },function(result){
+                        if(result.code==200){
+                            self.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                            self.search();
+                        }else{
+                            self.$message.error(result.msg);
+                        }
                     });
                 }).catch(() => {
                     self.$message({

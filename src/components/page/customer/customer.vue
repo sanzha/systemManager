@@ -50,7 +50,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="pageNo"
-            :page-sizes="[10, 20, 50]"
+            :page-sizes="[50, 100, 200, 500, 1000]"
             :page-size="searchInfo.count"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total_count">
@@ -167,14 +167,14 @@
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left"  label="公司" prop="" >
-                            <el-select v-model="borrowInfo.companyId" size="small" class="row" filterable  clearable placeholder="公司">
+                        <el-form-item size="small" label="公司" prop="companyId" >
+                            <el-select class="row" v-model="borrowInfo.companyId" size="small" placeholder="请选择">
                                 <el-option
                                     v-for="item in companies"
                                     :key="item.id"
                                     :label="item.name"
-                                    :value="item.id">
-                                </el-option>
+                                    :value="item.id"
+                                ></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -212,12 +212,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="贷款金额" prop="amount" >
-                            <el-input v-model="borrowInfo.amount" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.amount" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="期数" prop="periods" >
-                            <el-input v-model="borrowInfo.periods" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.periods" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -225,12 +225,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="周期(天)" prop="period" >
-                            <el-input v-model="borrowInfo.period" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.period" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="每期应还本金">
-                            <el-input v-model="eachPrincipal" class="row" :disabled="true"></el-input>
+                            <el-input type="number" v-model="eachPrincipal" class="row" :disabled="true"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -238,12 +238,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="每期应还利息" prop="eachInterest" >
-                            <el-input v-model="borrowInfo.eachInterest" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.eachInterest" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="保证金" prop="" >
-                            <el-input v-model="borrowInfo.bail" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.bail" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -251,12 +251,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="服务费" prop="" >
-                            <el-input v-model="borrowInfo.serviceCharge" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.serviceCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="家访费" prop="" >
-                            <el-input v-model="borrowInfo.visitCharge" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.visitCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -264,12 +264,12 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item size="small" class="label-left" label="诉讼费" prop="" >
-                            <el-input v-model="borrowInfo.lawCharge" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.lawCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right" label="其他费用" prop="" >
-                            <el-input v-model="borrowInfo.otherCharge" class="row"></el-input>
+                            <el-input type="number" v-model="borrowInfo.otherCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -316,13 +316,13 @@
                 total_count:50,
                 searchInfo:{
                     pageNo:1,
-                    count:10,
+                    count:50,
                     customerName:'',
                     userId:''
                 },
                 tableData:[],
                 salesmanList:[],    //业务员列表
-                companies:organizationList,
+                companies:utils.lsp.get('organizationList'),
                 newItem:{},
                 editItem:{},
                 borrowInfo:{},
@@ -344,7 +344,7 @@
                         { required: true, message: '请输入期数', trigger: 'blur' }
                     ],
                     companyId:[
-                        { required: true, message: '请选择公司', trigger: 'blur' }
+                        { required: true, message: '请选择公司', trigger: 'change' }
                     ],
                     loanDate:[
                         { required: true, message: '请输入贷款日期', trigger: 'blur' }

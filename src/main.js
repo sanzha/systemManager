@@ -12,7 +12,7 @@ import "babel-polyfill";
 
 window.resource = resource;
 window.utils = utils;
-window.organizationList = [{id:1,name:'诸神'},{id:2,name:'秩序'}];
+// window.organizationList = [{id:1,name:'诸神'},{id:2,name:'秩序'}];
 
 Vue.use(ElementUI);
 Vue.prototype.$axios = axios;

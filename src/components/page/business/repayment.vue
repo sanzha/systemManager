@@ -55,6 +55,8 @@
         </div>
 
         <el-table :data="tableData"
+                  show-summary
+                  :summary-method="getSummaries"
                   border
                   max-height="450"
                   :cell-style="{padding:'3px 0'}"
@@ -95,7 +97,7 @@
                        @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="pageNo"
-                       :page-sizes="[10, 20, 50]"
+                       :page-sizes="[50, 100, 200, 500, 1000]"
                        :page-size="searchInfo.count"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="total_count">
@@ -141,7 +143,7 @@
                 total_count:50,
                 searchInfo:{
                     pageNo:1,
-                    count:10,
+                    count:50,
                     companyId:'',
                     state:'',
                     startDate:'',
@@ -160,7 +162,7 @@
                         name:'已还款'
                     }
                 ],
-                organizationList:organizationList,
+                organizationList:utils.lsp.get('organizationList'),
                 editItemDialog:false
             }
         },
@@ -192,6 +194,36 @@
                     this.pageNo = 1;
                 }
             },
+            getSummaries(param) {
+                const { columns, data } = param;
+                const sums = [];
+                columns.forEach((column, index) => {
+                    if (index === 0) {
+                        sums[index] = '合计';
+                        return;
+                    }
+                    if([4,11,13].indexOf(index)>=0){
+                        sums[index] = '';
+                        return;
+                    }
+                    const values = data.map(item => Number(item[column.property]));
+                    if (!values.every(value => isNaN(value))) {
+                        sums[index] = values.reduce((prev, curr) => {
+                            const value = Number(curr);
+                            if (!isNaN(value)) {
+                                return prev + curr;
+                            } else {
+                                return prev;
+                            }
+                        }, 0);
+                        sums[index] += ' 元';
+                    } else {
+                        sums[index] = '';
+                    }
+                });
+
+                return sums;
+            },
             search(){
                 let self = this;
                 if( this.searchInfo.startDate!='' && this.searchInfo.endDate!= ''
@@ -205,7 +237,7 @@
                     if(result.code==200){
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
-                            item.company = utils.convertDict(item.companyId,organizationList);
+                            item.company = utils.convertDict(item.companyId,self.organizationList);
                             item.returnDate = item.returnDate.substring(0,10);
                             item.sureTime = item.sureTime ? item.sureTime.substring(0,10) : '';
                             item.stateLabel = item.state == 1 ? '已还款' : '未还款';
@@ -255,18 +287,30 @@
             confirmRepayment(index,row){
                 if(row.state==1)return;
                 let self = this;
-                resource.repaymentConfirm({
-                    id:row.id
-                },function(result){
-                    if(result.code==200){
-                        self.$message({
-                            message: result.msg,
-                            type: 'success'
-                        });
-                        self.search();
-                    }else{
-                        self.$message.error(result.msg);
-                    }
+                this.$confirm('是否确认还款?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let self = this;
+                    resource.repaymentConfirm({
+                        id:row.id
+                    },function(result){
+                        if(result.code==200){
+                            self.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                            self.search();
+                        }else{
+                            self.$message.error(result.msg);
+                        }
+                    });
+                }).catch(() => {
+                    self.$message({
+                        type: 'info',
+                        message: '已取消还款'
+                    });
                 });
             }
         }
