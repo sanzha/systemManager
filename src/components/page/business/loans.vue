@@ -189,7 +189,7 @@
                         <el-table :data="detail.returnBillList"
                                   :summary-method="getRepaySummaries"
                                   show-summary
-                                  border height="270"
+                                  border max-height="270"
                                   :cell-style="{padding:'3px 0'}">
                             <el-table-column label="序号" width="50" scope="scope" align="center">
                                 <template scope="scope">
@@ -284,9 +284,7 @@
                 <el-tab-pane label="保证金列表">
                     <div class="container">
                         <el-table :data="detail.bailBillList"
-                                  :summary-method="getBailSummaries"
-                                  show-summary
-                                  border height="312"
+                                  border
                                   :cell-style="{padding:'3px 0'}">
                             <el-table-column label="序号" width="50" scope="scope" align="center">
                                 <template scope="scope">

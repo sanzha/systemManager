@@ -10,7 +10,7 @@
 
         <div class="search">
             <span class="search-label">公司</span>
-            <el-select class="frame" v-model="searchInfo.companyId" size="small" placeholder="全部">
+            <el-select class="frame" v-model="searchInfo.companyId" size="small" placeholder="全部" clearable>
                 <el-option
                     v-for="item in organizationList"
                     :key="item.id"
@@ -59,7 +59,7 @@
             <el-form :model="newItem" :rules="rules" ref="newItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="公司" prop="companyId" >
-                    <el-select class="row" v-model="newItem.companyId" size="small" placeholder="请选择">
+                    <el-select class="row" v-model="newItem.companyId" size="small" placeholder="请选择"  clearable>
                         <el-option
                             v-for="item in organizationList"
                             :key="item.id"
