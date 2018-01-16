@@ -155,7 +155,7 @@
                         sums[index] = '合计';
                         return;
                     }
-                    if([3,9].indexOf(index)>=0){
+                    if([3,9,11].indexOf(index)>=0){
                         sums[index] = '';
                         return;
                     }
