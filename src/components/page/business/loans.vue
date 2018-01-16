@@ -272,7 +272,7 @@
                             <el-input v-model="batchRepaymentInfo.otherCharge" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="备注" prop="iDCardNo" >
-                            <el-input type="textarea" v-model="repayItem.mark" class="row"></el-input>
+                            <el-input type="textarea" v-model="batchRepaymentInfo.mark" class="row"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer" align='center'>
@@ -570,7 +570,8 @@
                             returnPrincipal:result.data.returnPrincipal,
                             returnInterest:result.data.returnInterest,
                             otherCharge:result.data.otherCharge,
-                            mark:''
+                            mark:result.data.mark,
+                            createTime:result.data.createTime
                         };
                         self.batchRepaymentInfoDialog = true;
                     }else{
