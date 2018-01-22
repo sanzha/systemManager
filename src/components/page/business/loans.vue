@@ -81,6 +81,7 @@
             <el-table-column prop="periods" label="期数"  align="center" ></el-table-column>
             <el-table-column prop="period" label="周期(天)"  align="center" ></el-table-column>
             <el-table-column prop="bail" label="保证金"  align="center" ></el-table-column>
+            <el-table-column prop="commision" label="佣金"  align="center" ></el-table-column>
             <el-table-column prop="serviceCharge" label="服务费"  align="center" ></el-table-column>
             <el-table-column prop="visitCharge" label="家访费"  align="center" ></el-table-column>
             <el-table-column prop="lawCharge" label="诉讼费"  align="center" ></el-table-column>
@@ -176,7 +177,11 @@
                                 <span>业务员:</span>
                                 <span v-text="detail.baseInfo.salesman.name"></span>
                             </el-col>
-                            <el-col :span="24" class="border-bottom-right cell">
+                            <el-col :span="6" class="border-bottom-right cell">
+                                <span>佣金:</span>
+                                <span v-text="detail.baseInfo.commision"></span>
+                            </el-col>
+                            <el-col :span="18" class="border-bottom-right cell">
                                 <span>备注:</span>
                                 <span v-text="detail.baseInfo.mark"></span>
                             </el-col>

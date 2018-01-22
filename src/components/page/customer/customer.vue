@@ -47,13 +47,13 @@
         </el-table>
 
         <el-pagination class = "page"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageNo"
-            :page-sizes="[50, 100, 200, 500, 1000]"
-            :page-size="searchInfo.count"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total_count">
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="pageNo"
+                       :page-sizes="[50, 100, 200, 500, 1000]"
+                       :page-size="searchInfo.count"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total_count">
         </el-pagination>
 
         <el-dialog title="新增客户" :visible.sync="addItemDialog" center>
@@ -167,6 +167,17 @@
 
                 <el-row :gutter="20">
                     <el-col :span="12">
+                        <!--<el-form-item size="small" class="label-left"  label="公司" >-->
+                        <!--<el-select v-model="borrowInfo.companyId" size="small" class="row" filterable  clearable placeholder="公司">-->
+                        <!--<el-option-->
+                        <!--v-for="item in companies"-->
+                        <!--:key="item.id"-->
+                        <!--:label="item.name"-->
+                        <!--:value="item.id">-->
+                        <!--</el-option>-->
+                        <!--</el-select>-->
+                        <!--</el-form-item>-->
+
                         <el-form-item size="small" label="公司" prop="companyId" >
                             <el-select class="row" v-model="borrowInfo.companyId" size="small" placeholder="请选择">
                                 <el-option
@@ -177,6 +188,7 @@
                                 ></el-option>
                             </el-select>
                         </el-form-item>
+
                     </el-col>
                     <el-col :span="12">
                         <el-form-item size="small" class="label-right"  label="姓名" prop="" >
@@ -250,35 +262,38 @@
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="服务费" prop="" >
+                        <el-form-item size="small" class="label-left" label="佣金" prop="" >
+                            <el-input type="number" v-model="borrowInfo.commision" class="row"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item size="small" class="label-right" label="服务费" prop="" >
                             <el-input type="number" v-model="borrowInfo.serviceCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
+                </el-row>
+
+                <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-right" label="家访费" prop="" >
+                        <el-form-item size="small" class="label-left" label="家访费" prop="" >
                             <el-input type="number" v-model="borrowInfo.visitCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="诉讼费" prop="" >
+                        <el-form-item size="small" class="label-right" label="诉讼费" prop="" >
                             <el-input type="number" v-model="borrowInfo.lawCharge" class="row"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item size="small" class="label-right" label="其他费用" prop="" >
-                            <el-input type="number" v-model="borrowInfo.otherCharge" class="row"></el-input>
-                        </el-form-item>
-                    </el-col>
                 </el-row>
-
-
 
                 <el-row :gutter="20">
                     <el-col :span="12">
-                        <el-form-item size="small" class="label-left" label="业务员">
+                        <el-form-item size="small" class="label-left" label="其他费用" prop="" >
+                            <el-input type="number" v-model="borrowInfo.otherCharge" class="row"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item size="small" class="label-right" label="业务员">
                             <el-select v-model="borrowInfo.userId" size="small" class="row" filterable :disabled="true"  clearable placeholder="业务员">
                                 <el-option
                                     v-for="item in salesmanDictList"
@@ -290,6 +305,23 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-form-item size="small" class="label-left" label="家访员">
+                            <el-select v-model="borrowInfo.visitId" size="small" class="row" filterable   clearable placeholder="家访员">
+                                <el-option
+                                    v-for="item in salesmanDictList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+
 
                 <el-row>
                     <el-col :span="24">

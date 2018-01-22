@@ -19,7 +19,7 @@ axios.interceptors.request.use(
 
 
 // let domain = 'http://gentou.acmefar.com:8088/';
-let domain = 'http://49.4.66.170:80/';
+let domain = 'http://49.4.66.170:80/test/';
 // let domain = 'http://192.168.1.9:8088/';
 let postMethods = {
     customerList:domain +'customer/list',   //客户列表
@@ -41,6 +41,9 @@ let postMethods = {
     bailList:domain +'bailbill/list',  //保证金列表
     bailUpdate:domain +'bailbill/update',  //保证金信息修改
     bailHandle:domain +'bailbill/handle',  //确认处理保证金
+    commisionbillList:domain +'commisionbill/list',  //佣金列表
+    commisionbillUpdate:domain +'commisionbill/update',  //佣金信息修改
+    commisionbillHandle:domain +'commisionbill/handle',  //确认处理佣金
 };
 
 let getMethods = {
