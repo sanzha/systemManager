@@ -89,6 +89,7 @@
             <el-table-column prop="returnedPrincipal" label="已还本金"  align="center" ></el-table-column>
             <el-table-column prop="returnedInterest" label="已还利息"  align="center" ></el-table-column>
             <el-table-column prop="salesman.name" label="业务员" width="160"  align="center" ></el-table-column>
+            <el-table-column prop="reporterman.name" label="家访员" width="160"  align="center" ></el-table-column>
             <el-table-column  label="操作"  align="center" width="100" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" @click="showDetail(scope.$index, scope.row)">查看</el-button>
@@ -502,6 +503,7 @@
                         self.tableData = result.data.list;
                         self.tableData.forEach(function (item,index,arr) {
                            item.salesman = utils.convertDict(item.userId,self.salesmanDictList);
+                           item.reporterman = utils.convertDict(item.visitId,self.salesmanDictList);
                            item.company = utils.convertDict(item.companyId,self.organizationList);
                            item.loanDate = item.loanDate.substring(0,10);
                         });
