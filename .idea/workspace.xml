@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8efc0a0a-3f0e-4837-af26-e424e5be55bb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/components/page/business/loans.vue" afterPath="$PROJECT_DIR$/src/components/page/business/loans.vue" />
+      <change beforePath="$PROJECT_DIR$/src/components/page/business/commission.vue" afterPath="$PROJECT_DIR$/src/components/page/business/commission.vue" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,14 +15,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.533052">
+    <splitter split-orientation="horizontal" split-proportion="0.84810126">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="commission.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/business/commission.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="253" column="50" lean-forward="true" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
+                <state relative-caret-position="407">
+                  <caret line="93" column="44" lean-forward="false" selection-start-line="93" selection-start-column="44" selection-end-line="93" selection-end-column="44" />
                   <folding />
                 </state>
               </provider>
@@ -33,10 +32,10 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="deposit.vue" pinned="false" current-in-tab="false">
+          <file leaf-file-name="deposit.vue" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/components/page/business/deposit.vue">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="300">
+                <state relative-caret-position="-1680">
                   <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
                   <folding />
                 </state>
@@ -53,7 +52,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="loans.vue" pinned="false" current-in-tab="true">
+          <file leaf-file-name="loans.vue" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/components/page/business/loans.vue">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="287">
@@ -81,8 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getDict</find>
-      <find>forEach</find>
       <find>returnBail</find>
       <find>周期(天)</find>
       <find>保证金</find>
@@ -111,6 +108,8 @@
       <find>佣金</find>
       <find>家访</find>
       <find>salesman</find>
+      <find>待发佣金</find>
+      <find>incomeCommision</find>
     </findStrings>
     <replaceStrings>
       <replace>companyId</replace>
@@ -143,8 +142,8 @@
         <option value="$PROJECT_DIR$/src/components/page/Readme.vue" />
         <option value="$PROJECT_DIR$/src/controller/resource.js" />
         <option value="$PROJECT_DIR$/src/components/page/customer/customer.vue" />
-        <option value="$PROJECT_DIR$/src/components/page/business/commission.vue" />
         <option value="$PROJECT_DIR$/src/components/page/business/loans.vue" />
+        <option value="$PROJECT_DIR$/src/components/page/business/commission.vue" />
       </list>
     </option>
   </component>
@@ -319,12 +318,12 @@
       <workItem from="1516019451394" duration="8498000" />
       <workItem from="1516192852138" duration="37000" />
       <workItem from="1516621744015" duration="9498000" />
-      <workItem from="1516718790737" duration="522000" />
+      <workItem from="1516718790737" duration="1480000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103533000" />
+    <option name="totallyTimeSpent" value="104491000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1460" height="920" extended-state="0" />
@@ -707,14 +706,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/page/business/deposit.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/business/loans.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
@@ -723,10 +714,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/page/business/deposit.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1680">
+          <caret line="10" column="8" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/page/business/commission.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="253" column="50" lean-forward="true" selection-start-line="253" selection-start-column="50" selection-end-line="253" selection-end-column="50" />
+        <state relative-caret-position="407">
+          <caret line="93" column="44" lean-forward="false" selection-start-line="93" selection-start-column="44" selection-end-line="93" selection-end-column="44" />
           <folding />
         </state>
       </provider>

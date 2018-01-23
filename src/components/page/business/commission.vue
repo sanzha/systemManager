@@ -87,15 +87,15 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="待发佣金">
-                    <el-input v-model="editItem.returnCommision" class="row" :disabled="true"></el-input>
+                    <el-input :value="returnCommision" class="row" :disabled="true"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="已发佣金">
-                    <el-input v-model="editItem.returnedCommision" class="row"></el-input>
+                    <el-input type="number" v-model="editItem.returnedCommision" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="扣除佣金">
-                    <el-input v-model="editItem.incomeCommision" class="row"></el-input>
+                    <el-input type="number" v-model="editItem.incomeCommision" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="备注">
@@ -149,8 +149,12 @@
                 });
                 return result;
             },
-            eachPrincipal(){
-                return this.borrowInfo.amount && this.borrowInfo.periods ? Number(this.borrowInfo.amount/this.borrowInfo.periods).toFixed(2) : '';
+            returnCommision(){
+                return this.editItem.commision
+                        && this.editItem.returnedCommision
+                        && this.editItem.incomeCommision
+                        ? this.editItem.commision - this.editItem.returnedCommision - this.editItem.incomeCommision
+                        : '';
             }
         },
         methods:{
