@@ -231,6 +231,7 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
+                        self.editItem.returnCommision = self.returnCommision;
                         resource.commisionbillUpdate(self.editItem,function(result){
                             if(result.code==200){
                                 self.$message({

@@ -236,7 +236,7 @@
                             <el-input v-model="repayItem.returnDate" class="row" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还本金" prop="phone" >
-                            <el-input v-model="repayItem.returnPrincipal" :disabled="true" class="row"></el-input>
+                            <el-input v-model="repayItem.returnPrincipal" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还利息" prop="address" >
                             <el-input v-model="repayItem.returnInterest" class="row"></el-input>
@@ -269,7 +269,7 @@
                             <el-input v-model="batchRepaymentInfo.returnDate" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还本金" prop="phone" >
-                            <el-input v-model="batchRepaymentInfo.returnPrincipal" :disabled="true" class="row"></el-input>
+                            <el-input v-model="batchRepaymentInfo.returnPrincipal" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="应还利息" prop="address" >
                             <el-input v-model="batchRepaymentInfo.returnInterest" class="row"></el-input>
