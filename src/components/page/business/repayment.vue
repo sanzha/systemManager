@@ -67,7 +67,7 @@
                 width="55">
             </el-table-column>
 
-            <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
+            <el-table-column label="序号" width="50" scope="scope" align="center">
                 <template scope="scope">
                     <span v-text="scope.$index+1"></span>
                 </template>

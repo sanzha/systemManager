@@ -21,8 +21,17 @@
             </el-select>
             <el-button class="m-left20" size="small" type="primary" icon="el-icon-search" @click="triggerSearch">搜索</el-button>
             <el-button class="m-left20" size="small" type="primary" @click="handleAdd">新增</el-button>
+            <el-button class="m-left20" size="small" type="primary" @click="handleBatchUpdate">批量修改业务员</el-button>
         </div>
-        <el-table :data="tableData" border max-height="500" :cell-style="{padding:'3px 0'}">
+        <el-table :data="tableData"
+                  border
+                  max-height="500"
+                  :cell-style="{padding:'3px 0'}"
+                  @selection-change="handleSelectionChange">
+            <el-table-column
+                type="selection"
+                width="55">
+            </el-table-column>
             <el-table-column label="序号" width="70" scope="scope" align="center" fixed>
                 <template scope="scope">
                     <span v-text="scope.$index+1"></span>
@@ -337,6 +346,22 @@
                 <el-button size="small" @click="createBorrowDialog = false">取 消</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="批量修改业务员" :visible.sync="batchUpdateSalesmanDialog" center>
+            <el-select v-model="userId" size="small" style="width: 60%;margin-left: 20%;" filterable  clearable placeholder="请选择业务员">
+                <el-option
+                    v-for="item in salesmanDictList"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                </el-option>
+            </el-select>
+
+            <div slot="footer" class="dialog-footer" align='center'>
+                <el-button size="small" type="primary" @click="batchUpdate">确 定</el-button>
+                <el-button size="small" @click="batchUpdateSalesmanDialog = false">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -355,6 +380,8 @@
                 tableData:[],
                 salesmanList:[],    //业务员列表
                 companies:utils.lsp.get('organizationList'),
+                multipleSelection:[],
+                userId:'',
                 newItem:{},
                 editItem:{},
                 borrowInfo:{},
@@ -362,6 +389,7 @@
                 addItemDialog:false,
                 editItemDialog:false,
                 createBorrowDialog:false,
+                batchUpdateSalesmanDialog:false,
                 rules:{
                     name:[
                         { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -587,6 +615,44 @@
                         return false;
                     }
                 });
+            },
+            handleSelectionChange(arr) {
+                let self = this;
+                this.multipleSelection = [];
+                arr.forEach(function (item,index) {
+                    self.multipleSelection.push(item.id);
+                });
+                console.log(this.multipleSelection)
+            },
+            handleBatchUpdate(){
+                if( this.multipleSelection.length == 0 ){
+                    this.$message({
+                        message: '请选择客户!',
+                        type: 'warning'
+                    });
+                }else{
+                    this.batchUpdateSalesmanDialog = true;
+                    this.userId = '';
+                }
+            },
+            batchUpdate(){
+                let self = this;
+                if( this.multipleSelection.length>0 && this.userId!='' ){
+                    resource.batchUpdateSalesman({
+                        customerId:self.multipleSelection.join(','),
+                        userId:self.userId
+                    },function (result) {
+                        if(result.code==200){
+                            self.$message({
+                                message: result.msg,
+                                type: 'success'
+                            });
+                            self.batchUpdateSalesmanDialog = false;
+                        }else{
+                            self.$message.error(result.msg);
+                        }
+                    })
+                }
             }
         }
     }

@@ -19,13 +19,14 @@ axios.interceptors.request.use(
 
 
 // let domain = 'http://gentou.acmefar.com:8088/';
-let domain = 'http://49.4.66.170:80/test/';
+let domain = 'http://49.4.66.170:80/';
 // let domain = 'http://192.168.1.9:8088/';
 let postMethods = {
     customerList:domain +'customer/list',   //客户列表
     customerAdd:domain +'customer/create',  //新增客户
     customerUpdate:domain +'customer/update',   //修改客户
     customerDel:domain +'customer/delete',  //删除客户
+    batchUpdateSalesman:domain +'customer/batchupdate',  //批量更换业务员
     userList:domain +'user/list',  //员工列表
     userAdd:domain +'user/create',  //新增员工
     userUpdate:domain +'user/update',  //新增员工
