@@ -150,11 +150,7 @@
                 return result;
             },
             returnCommision(){
-                return this.editItem.commision
-                        && this.editItem.returnedCommision
-                        && this.editItem.incomeCommision
-                        ? this.editItem.commision - this.editItem.returnedCommision - this.editItem.incomeCommision
-                        : '';
+                return this.editItem.commision - this.editItem.returnedCommision - this.editItem.incomeCommision;
             }
         },
         methods:{
