@@ -2,7 +2,7 @@ let utils = {};
 
 utils.regExp = {
     validatePhone:(rule, value, callback) => {
-        let regPhone = new RegExp(/^1[3|4|5|6|7|8][0-9]\d{4,8}$/);
+        let regPhone = new RegExp(/^1\d{10}$/);
         if (value === '' || value == undefined) {
             callback(new Error('请输入手机号'));
         }else{

@@ -111,7 +111,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="应还本金"  prop="phone" >
-                    <el-input v-model="editItem.returnPrincipal" class="row" disabled></el-input>
+                    <el-input v-model="editItem.returnPrincipal" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="应还利息" prop="address" >

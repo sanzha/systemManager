@@ -150,11 +150,7 @@
                 return result;
             },
             returnCommision(){
-                return this.editItem.commision
-                        && this.editItem.returnedCommision
-                        && this.editItem.incomeCommision
-                        ? this.editItem.commision - this.editItem.returnedCommision - this.editItem.incomeCommision
-                        : '';
+                return this.editItem.commision - this.editItem.returnedCommision - this.editItem.incomeCommision;
             }
         },
         methods:{
@@ -235,6 +231,7 @@
                 let self = this;
                 this.$refs[formName].validate(function(valid){
                     if (valid) {
+                        self.editItem.returnCommision = self.returnCommision;
                         resource.commisionbillUpdate(self.editItem,function(result){
                             if(result.code==200){
                                 self.$message({
