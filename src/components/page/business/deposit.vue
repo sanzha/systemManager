@@ -46,7 +46,7 @@
                 <template scope="scope">
                     <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">
-                        <span v-text="scope.row.state == 0 ? '确认还款' : '取消确认'"></span>
+                        <span v-text="scope.row.state == 0 ? '确认处理' : '取消确认'"></span>
                     </el-button>
                 </template>
             </el-table-column>
