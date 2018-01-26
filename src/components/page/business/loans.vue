@@ -327,7 +327,7 @@
                             <el-input v-model="bailItem.remark" :disabled="true" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="保证金" >
-                            <el-input :value="bailItem.bail" :disabled="true" class="row"></el-input>
+                            <el-input :value="bailItem.bail" class="row"></el-input>
                         </el-form-item>
                         <el-form-item size="small" label="待退金额" >
                             <el-input :value="returnBail" class="row" :disabled="true"></el-input>
@@ -469,7 +469,7 @@
                             } else {
                                 return prev;
                             }
-                        }, 0);
+                        }, 0).toFixed(2);
                         sums[index] += ' 元';
                     } else {
                         sums[index] = '';

@@ -648,6 +648,7 @@
                                 type: 'success'
                             });
                             self.batchUpdateSalesmanDialog = false;
+                            self.search();
                         }else{
                             self.$message.error(result.msg);
                         }
