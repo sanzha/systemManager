@@ -66,7 +66,7 @@
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="保证金">
-                    <el-input :value="editItem.bail" class="row"></el-input>
+                    <el-input v-model="editItem.bail" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="待退金额">

@@ -17,6 +17,26 @@
                         :value="item.id"
                     ></el-option>
                 </el-select>
+                <span class="search-label">贷款时间</span>
+                <el-date-picker
+                    class="frame"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.loanStartDate"
+                    type="date"
+                    size="small"
+                    placeholder="开始时间">
+                </el-date-picker>
+                <span>-</span>
+                <el-date-picker
+                    class="frame"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.loanEndDate"
+                    type="date"
+                    size="small"
+                    placeholder="结束时间">
+                </el-date-picker>
                 <span class="search-label">还款时间</span>
                 <el-date-picker
                     class="frame"
@@ -146,7 +166,9 @@
                     companyId:'',
                     state:'',
                     startDate:'',
-                    endDate:''
+                    endDate:'',
+                    loanStartDate:'',
+                    loanEndDate:''
                 },
                 tableData:[],
                 multipleSelection:[],
@@ -230,6 +252,13 @@
                     this.$message.error('结束时间需大于开始时间');
                     this.searchInfo.startDate = '';
                     this.searchInfo.endDate = '';
+                    return;
+                }
+                if( this.searchInfo.loanStartDate!='' && this.searchInfo.loanEndDate!= ''
+                    && new Date(this.searchInfo.loanEndDate) - new Date(this.searchInfo.loanStartDate) < 0 ){
+                    this.$message.error('结束时间需大于开始时间');
+                    this.searchInfo.loanStartDate = '';
+                    this.searchInfo.loanEndDate = '';
                     return;
                 }
                 resource.repaymentList(this.searchInfo,function(result){

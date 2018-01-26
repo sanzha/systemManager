@@ -220,7 +220,9 @@
                 this.editItem = {
                     id:row.id,
                     commision:row.commision,
+                    billId:row.billId,
                     userId:row.userId,
+                    remark:row.remark,
                     returnCommision:row.returnCommision,
                     returnedCommision:row.returnedCommision,
                     incomeCommision:row.incomeCommision,
