@@ -17,6 +17,26 @@
                         :value="item.id"
                     ></el-option>
                 </el-select>
+                <span class="search-label">贷款时间</span>
+                <el-date-picker
+                    class="frame"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.loanStartDate"
+                    type="date"
+                    size="small"
+                    placeholder="开始时间">
+                </el-date-picker>
+                <span>-</span>
+                <el-date-picker
+                    class="frame"
+                    :editable="false"
+                    value-format="yyyy-MM-dd"
+                    v-model="searchInfo.loanEndDate"
+                    type="date"
+                    size="small"
+                    placeholder="结束时间">
+                </el-date-picker>
                 <span class="search-label">还款时间</span>
                 <el-date-picker
                     class="frame"
@@ -67,11 +87,8 @@
                 width="55">
             </el-table-column>
 
-            <el-table-column label="序号" width="50" scope="scope" align="center">
-                <template scope="scope">
-                    <span v-text="scope.$index+1"></span>
-                </template>
-            </el-table-column >
+            <el-table-column label="序号" width="50" scope="scope" type="index" align="center" fixed>
+            </el-table-column>
             <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
             <el-table-column prop="customerName" label="姓名" width="80"  align="center" ></el-table-column>
             <el-table-column prop="phone" label="手机" width="150"  align="center" ></el-table-column>
@@ -87,7 +104,9 @@
             <el-table-column  label="操作" width="120" align="center" fixed="right">
                 <template scope="scope">
                     <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="confirmRepayment(scope.$index, scope.row)">确认还款</el-button>
+                    <el-button type="text" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="confirmRepayment(scope.$index, scope.row)">
+                        <span v-text="scope.row.state == 0 ? '确认还款' : '取消确认'"></span>
+                    </el-button>
                 </template>
             </el-table-column>
 
@@ -147,7 +166,9 @@
                     companyId:'',
                     state:'',
                     startDate:'',
-                    endDate:''
+                    endDate:'',
+                    loanStartDate:'',
+                    loanEndDate:''
                 },
                 tableData:[],
                 multipleSelection:[],
@@ -215,7 +236,7 @@
                             } else {
                                 return prev;
                             }
-                        }, 0);
+                        }, 0).toFixed(2);
                         sums[index] += ' 元';
                     } else {
                         sums[index] = '';
@@ -231,6 +252,13 @@
                     this.$message.error('结束时间需大于开始时间');
                     this.searchInfo.startDate = '';
                     this.searchInfo.endDate = '';
+                    return;
+                }
+                if( this.searchInfo.loanStartDate!='' && this.searchInfo.loanEndDate!= ''
+                    && new Date(this.searchInfo.loanEndDate) - new Date(this.searchInfo.loanStartDate) < 0 ){
+                    this.$message.error('结束时间需大于开始时间');
+                    this.searchInfo.loanStartDate = '';
+                    this.searchInfo.loanEndDate = '';
                     return;
                 }
                 resource.repaymentList(this.searchInfo,function(result){
@@ -285,9 +313,10 @@
                 });
             },
             confirmRepayment(index,row){
-                if(row.state==1)return;
+                let str = '是否确认还款?';
+                if(row.state==1) str = '是否取消确认还款?';
                 let self = this;
-                this.$confirm('是否确认还款?', '提示', {
+                this.$confirm(str, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

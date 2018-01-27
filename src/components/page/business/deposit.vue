@@ -29,10 +29,7 @@
                   border
                   max-height="500"
                   :cell-style="{padding:'3px 0'}">
-            <el-table-column label="序号" width="50" scope="scope" align="center" fixed>
-                <template scope="scope">
-                    <span v-text="scope.$index+1"></span>
-                </template>
+            <el-table-column label="序号" width="50" scope="scope" align="center" type="index" fixed>
             </el-table-column >
             <el-table-column prop="company.name" label="公司" width="150"  align="center" ></el-table-column>
             <el-table-column prop="customerName" label="姓名"  align="center" ></el-table-column>
@@ -48,7 +45,9 @@
             <el-table-column  label="操作"  align="center" width="120" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                    <el-button type="text" size="small" v-bind:class=" scope.row.returnBail == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">
+                        <span v-text="scope.row.state == 0 ? '确认处理' : '取消确认'"></span>
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -67,7 +66,7 @@
             <el-form :model="editItem" :rules="rules" ref="editItem" :label-position="'right'" label-width="150px" inline-message>
 
                 <el-form-item size="small" label="保证金">
-                    <el-input :value="editItem.bail" class="row" :disabled="true"></el-input>
+                    <el-input v-model="editItem.bail" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="待退金额">
@@ -168,7 +167,7 @@
                             } else {
                                 return prev;
                             }
-                        }, 0);
+                        }, 0).toFixed(2);
                         sums[index] += ' 元';
                     } else {
                         sums[index] = '';
@@ -232,9 +231,11 @@
                 });
             },
             confirmHandle(index, row){
-                if(row.returnBail != 0 || row.state != 0)return;
+                if (row.returnBail != 0) return;
+                let str = '是否完成保证金处理?';
+                if(row.state==1) str = '是否取消保证金确认处理?';
                 var self = this;
-                this.$confirm('是否完成保证金处理?', '提示', {
+                this.$confirm(str, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'

@@ -53,7 +53,9 @@
             <el-table-column  label="操作"  align="center" width="150" fixed="right">
                 <template scope="scope">
                     <el-button type="text" size="small" v-bind:class=" scope.row.state == 0 ? '' : 'grey' " @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="text" size="small" v-bind:class=" scope.row.returnCommision == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">确认处理</el-button>
+                    <el-button type="text" size="small" v-bind:class=" scope.row.returnCommision == 0 && scope.row.state == 0 ? '' : 'grey' " @click="confirmHandle(scope.$index, scope.row)">
+                        <span v-text="scope.row.state == 0 ? '确认处理' : '取消确认'"></span>
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -83,7 +85,7 @@
                 </el-form-item>
 
                 <el-form-item size="small" label="佣金">
-                    <el-input v-model="editItem.commision" class="row" :disabled="true"></el-input>
+                    <el-input v-model="editItem.commision" class="row"></el-input>
                 </el-form-item>
 
                 <el-form-item size="small" label="待发佣金">
@@ -156,7 +158,7 @@
         methods:{
             handleSizeChange(val){
                 this.searchInfo.count = val;
-                this.pageNo = 1;
+                this.triggerSearch();
             },
             handleCurrentChange(val){
                 this.pageNo = val;
@@ -218,7 +220,9 @@
                 this.editItem = {
                     id:row.id,
                     commision:row.commision,
+                    billId:row.billId,
                     userId:row.userId,
+                    remark:row.remark,
                     returnCommision:row.returnCommision,
                     returnedCommision:row.returnedCommision,
                     incomeCommision:row.incomeCommision,
@@ -250,9 +254,11 @@
                 });
             },
             confirmHandle(index, row){
-                if(row.returnCommision != 0 || row.state != 0)return;
+                if (row.returnCommision != 0) return;
+                let str = '是否确认佣金处理?';
+                if(row.state==1) str = '是否取消佣金确认处理?';
                 var self = this;
-                this.$confirm('是否完成佣金处理?', '提示', {
+                this.$confirm(str, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
